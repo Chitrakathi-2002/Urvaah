@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product | House of Urvaah</title>
+  <meta name="description" content="Luxury Indian ethnic wear — House of Urvaah">
+  <link rel="stylesheet" href="css/globals.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/product-hero.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav>
+    <a href="index.html" class="nav-logo">House of Urvaah</a>
+    <div class="nav-links" id="mobile-menu">
+      <a href="collections.html?cat=sarees">Sarees</a>
+      <a href="collections.html?cat=menswear">Menswear</a>
+      <a href="collections.html?cat=couples">Couples</a>
+      <a href="#">New Arrivals</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-icon" title="Search"><i data-lucide="search"></i></div>
+      <div class="nav-icon" title="Wishlist">
+        <i data-lucide="heart"></i><span class="count-badge wishlist-count">0</span>
+      </div>
+      <div class="nav-icon" data-theme-toggle title="Toggle theme">
+        <i data-lucide="moon"></i>
+      </div>
+      <div class="nav-icon" title="Cart">
+        <i data-lucide="shopping-bag"></i><span class="count-badge cart-count">0</span>
+      </div>
+      <div class="nav-icon mobile-toggle" id="menu-toggle" aria-label="Menu">
+        <i data-lucide="menu"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ PRODUCT HERO ═══ -->
+  <main>
+    <div class="product-hero container">
+
+      <!-- ── GALLERY ── -->
+      <div class="gallery-container">
+        <div class="thumbnails" id="thumbnail-strip"></div>
+        <div class="main-view" id="main-view">
+          <span class="gallery-counter" id="gallery-counter">1 / 5</span>
+          <button class="main-expand-btn" id="expand-btn" title="View full screen" aria-label="Expand image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+              <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <div class="sidebar">
+
+        <!-- Breadcrumb -->
+        <p class="hero-breadcrumb" id="breadcrumb">
+          Home <span>/</span> Sarees <span>/</span> <span id="breadcrumb-product">...</span>
+        </p>
+
+        <!-- Badges -->
+        <div class="hero-badges" id="hero-badges">
+          <span class="badge badge-bestseller" id="badge-bestseller" style="display:none">🏆 Bestseller</span>
+          <span class="badge badge-discount" id="badge-discount">50% OFF</span>
+          <span class="badge badge-certified">✦ Silk Mark India</span>
+        </div>
+
+        <!-- Product Name + Tagline -->
+        <h1 class="hero-product-name" id="product-name">Loading...</h1>
+        <p class="hero-tagline" id="product-tagline"></p>
+
+        <!-- Rating Row -->
+        <div class="hero-rating-row">
+          <div class="hero-stars" id="hero-stars"></div>
+          <span class="hero-rating-score" id="hero-rating-score">4.9</span>
+          <span class="hero-rating-count" id="hero-rating-count">(86 reviews)</span>
+          <span class="hero-rating-divider"></span>
+          <span class="hero-wishlist-count">♥ <span id="wishlist-count-text">312</span> wishlisted</span>
+        </div>
+
+        <!-- Price -->
+        <div class="price-block">
+          <span class="current-price" id="current-price">₹3,599</span>
+          <span class="mrp" id="mrp">₹7,198</span>
+          <span class="discount-tag" id="discount">-50% OFF</span>
+        </div>
+        <p class="emi-note">or <strong>EMI from ₹299/month</strong> · COD available</p>
+
+        <!-- Urgency -->
+        <div class="hero-urgency" id="urgency-mini">
+          🔥 <span id="stock-count-mini">Only 7 left in stock — order soon!</span>
+        </div>
+
+        <!-- Colour -->
+        <div class="colour-selector-wrap">
+          <p class="hero-section-label">Colour — <span id="selected-colour-name" style="color:var(--gold);text-transform:none;font-style:italic"></span></p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap" id="colour-selector"></div>
+        </div>
+
+        <!-- Size -->
+        <div class="size-selector">
+          <div class="size-header">
+            <p class="hero-section-label" style="margin-bottom:0">Select Length</p>
+            <button class="size-guide-link" onclick="openSizeGuide()">📏 Size Guide</button>
+          </div>
+          <div class="size-option active" onclick="selectSize(this,'Standard')">
+            <div style="font-weight:700;font-size:14px;font-family:'DM Sans',sans-serif">Standard — 5.5m</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Saree + 0.8m matching blouse piece included</div>
+          </div>
+          <div class="size-option" onclick="selectSize(this,'Saree Only')">
+            <div style="font-weight:700;font-size:14px;font-family:'DM Sans',sans-serif">Saree Only — 5.5m</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Without blouse piece · Save ₹200</div>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="hero-cta-group">
+          <button id="add-to-cart-btn" class="btn btn-primary" style="width:100%">
+            🛒 Add to Cart
+          </button>
+          <div class="btn-secondary-row">
+            <button id="wishlist-btn" class="btn-outline" style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer">
+              ♥ Wishlist
+            </button>
+            <a href="https://wa.me/919876543210" target="_blank" class="btn-whatsapp">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Trust Grid -->
+        <div class="trust-grid">
+          <div class="trust-item"><span class="trust-icon">🚚</span><div class="trust-text"><strong>Free Shipping</strong><small>On orders ₹999+</small></div></div>
+          <div class="trust-item"><span class="trust-icon">🔄</span><div class="trust-text"><strong>7-Day Returns</strong><small>No questions asked</small></div></div>
+          <div class="trust-item"><span class="trust-icon">💳</span><div class="trust-text"><strong>COD Available</strong><small>Pay on delivery</small></div></div>
+          <div class="trust-item"><span class="trust-icon">🏅</span><div class="trust-text"><strong>Silk Mark India</strong><small>100% authentic</small></div></div>
+        </div>
+
+        <!-- Story Snippet -->
+        <div class="hero-story-snippet">
+          <p id="product-story"></p>
+          <button class="read-more" onclick="document.getElementById('brand-story').scrollIntoView({behavior:'smooth'})">
+            Read the full story →
+          </button>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div><!-- /product-hero -->
+
+    <!-- ═══════════════════════════════════════
+         P3 MARKETING BODY — ALL SECTIONS
+         ═══════════════════════════════════════ -->
+
+    <!-- SECTION 1: URGENCY STRIP -->
+    <section class="urgency-strip" id="urgency-strip">
+      <div class="urgency-inner">
+        <div class="urgency-item">
+          <span class="urgency-icon">🔥</span>
+          <span>Only <strong id="stock-count">7</strong> left in stock</span>
+        </div>
+        <div class="urgency-divider"></div>
+        <div class="urgency-item">
+          <span class="urgency-icon">👁</span>
+          <span><strong id="viewer-count">143</strong> people viewing now</span>
+          <span class="live-dot"></span>
+        </div>
+        <div class="urgency-divider"></div>
+        <div class="urgency-item">
+          <span class="urgency-icon">🛒</span>
+          <span><strong>23</strong> sold in last 48 hours</span>
+        </div>
+        <div class="urgency-divider"></div>
+        <div class="urgency-item countdown-item">
+          <span class="urgency-icon">⚡</span>
+          <span>Sale ends in:</span>
+          <div class="countdown-timer" id="countdown">
+            <div class="time-block"><span class="time-digit" id="cd-hours">00</span><span class="time-label">HRS</span></div>
+            <span class="colon">:</span>
+            <div class="time-block"><span class="time-digit" id="cd-mins">00</span><span class="time-label">MIN</span></div>
+            <span class="colon">:</span>
+            <div class="time-block"><span class="time-digit" id="cd-secs">00</span><span class="time-label">SEC</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: BRAND STORY -->
+    <section class="brand-story" id="brand-story">
+      <div class="container">
+        <div class="brand-story-grid">
+          <div class="story-visual">
+            <div class="story-img-wrap">
+              <div class="story-img" id="story-main-img"></div>
+              <div class="story-img-overlay" id="story-detail-img"></div>
+            </div>
+            <div class="story-badge">
+              <span class="badge-star">✦</span>
+              <p>Handcrafted in</p>
+              <strong>Kanchipuram</strong>
+              <p>Since 1987</p>
+            </div>
+          </div>
+          <div class="story-content">
+            <p class="section-prelabel">✦ THE CRAFT ✦</p>
+            <h2 class="story-headline" id="story-headline"></h2>
+            <div class="story-text" id="story-text"></div>
+            <ul class="story-bullets" id="story-bullets"></ul>
+            <div class="story-origin">
+              <div class="origin-item"><span class="origin-icon">🧵</span><div><strong>Hand Woven</strong><small>By master artisans</small></div></div>
+              <div class="origin-item"><span class="origin-icon">✦</span><div><strong>24K Zari</strong><small>Gold-plated thread</small></div></div>
+              <div class="origin-item"><span class="origin-icon">🏅</span><div><strong>Silk Mark</strong><small>India Certified</small></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: PRODUCT VIDEO -->
+    <section class="product-video-section" id="product-video">
+      <div class="container">
+        <p class="section-prelabel">✦ SEE IT IN ACTION ✦</p>
+        <h2 class="section-title">Watch It Come Alive</h2>
+        <div class="video-wrapper" id="video-wrapper"></div>
+        <p class="video-caption">Watch our artisan drape the saree in under 30 seconds</p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: FABRIC DETAILS ACCORDION -->
+    <section class="fabric-details" id="fabric-details">
+      <div class="container">
+        <p class="section-prelabel">✦ THE DETAILS ✦</p>
+        <h2 class="section-title">Every Thread Tells a Story</h2>
+        <div class="accordion-list" id="fabric-accordion">
+          <div class="accordion-panel">
+            <button class="accordion-trigger" aria-expanded="true">
+              <span class="acc-icon">🧵</span><span class="acc-title">Fabric &amp; Weave Details</span><span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-body open"></div>
+          </div>
+          <div class="accordion-panel">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span class="acc-icon">📏</span><span class="acc-title">Size &amp; Measurements</span><span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-body"></div>
+          </div>
+          <div class="accordion-panel">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span class="acc-icon">🎁</span><span class="acc-title">Packaging &amp; Delivery</span><span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-body"></div>
+          </div>
+          <div class="accordion-panel">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span class="acc-icon">✨</span><span class="acc-title">Care Instructions</span><span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-body"></div>
+          </div>
+          <div class="accordion-panel">
+            <button class="accordion-trigger" aria-expanded="false">
+              <span class="acc-icon">🔄</span><span class="acc-title">Returns &amp; Exchange Policy</span><span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: REVIEWS -->
+    <section class="reviews-section" id="reviews">
+      <div class="container">
+        <p class="section-prelabel">✦ REAL CUSTOMERS · REAL JOY ✦</p>
+        <h2 class="section-title">What Our Families Say</h2>
+        <div class="rating-summary">
+          <div class="rating-big">
+            <div class="rating-number" id="avg-rating">4.9</div>
+            <div class="rating-stars-row" id="avg-stars"></div>
+            <div class="rating-total" id="rating-total">86 reviews</div>
+          </div>
+          <div class="rating-bars" id="rating-bars"></div>
+        </div>
+        <div class="review-filters">
+          <button class="filter-btn active" data-filter="all">All Reviews</button>
+          <button class="filter-btn" data-filter="5">5 Star</button>
+          <button class="filter-btn" data-filter="4">4 Star</button>
+          <button class="filter-btn" data-filter="photo">With Photos</button>
+          <select class="review-sort" id="review-sort">
+            <option value="recent">Most Recent</option>
+            <option value="helpful">Most Helpful</option>
+            <option value="high">Highest Rated</option>
+            <option value="low">Lowest Rated</option>
+          </select>
+        </div>
+        <div class="ugc-photos">
+          <p class="ugc-label">📸 Customer Photos</p>
+          <div class="ugc-grid" id="ugc-grid"></div>
+        </div>
+        <div class="review-cards" id="review-cards"></div>
+        <button class="load-more-btn" id="load-more-reviews">Load More Reviews</button>
+        <div class="write-review-cta">
+          <p>Bought this product? Share your look!</p>
+          <a href="https://wa.me/919876543210?text=I want to share my review" target="_blank" class="btn-review-wa">
+            📸 Share Your Look on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: INFLUENCER GRID -->
+    <section class="influencer-section" id="influencer">
+      <div class="container">
+        <p class="section-prelabel">✦ AS SEEN ON INSTAGRAM ✦</p>
+        <h2 class="section-title">How They Styled It</h2>
+        <p class="section-subtitle">Real customers. Real moments. Real magic.</p>
+        <div class="influencer-grid" id="influencer-grid"></div>
+        <div class="insta-cta">
+          <p>Tag us <strong>@houseofurvaah</strong> to be featured here</p>
+          <a href="https://instagram.com/houseofurvaah" class="btn-insta" target="_blank">Follow on Instagram →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer style="padding:80px 0;border-top:1px solid var(--border-default);text-align:center;background:var(--bg-surface)">
+    <div class="container">
+      <h2 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);margin-bottom:12px">House of Urvaah</h2>
+      <p style="font-size:13px;color:var(--text-muted)">Luxury Indian ethnic wear — Crafted with love, delivered with care.</p>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:24px">© 2026 House of Urvaah. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div class="modal-overlay" id="size-guide-modal" role="dialog" aria-modal="true" style="display:none">
+    <div class="modal-panel">
+      <button class="modal-close" id="close-size-modal" aria-label="Close">✕</button>
+      <h3>Saree Size Guide</h3>
+      <div class="size-guide-content"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-overlay" id="lightbox" style="display:none">
+    <button class="lightbox-close" id="lightbox-close">✕</button>
+    <button class="lightbox-nav" id="lightbox-prev">‹</button>
+    <div class="lightbox-img-wrap">
+      <div class="lightbox-img" id="lightbox-img"></div>
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+    <button class="lightbox-nav" id="lightbox-next">›</button>
+    <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
+  </div>
+
+  <!-- SCRIPTS — order matters -->
+  <script src="js/data/products.js"></script>
+  <script src="js/data/reviews.js"></script>
+  <script src="js/globals.js"></script>
+  <script src="js/product-detail.js"></script>
+  <script>
+    /* ══ HERO GALLERY (P2 logic) ══ */
+    (function() {
+      const params  = new URLSearchParams(window.location.search);
+      const slug    = params.get('slug');
+      const product = getProductBySlug(slug);
+      if (!product) return;
+
+      // ── Populate text fields ──
+      document.getElementById('product-name').textContent      = product.name;
+      document.getElementById('product-tagline').textContent   = product.tagline;
+      document.getElementById('breadcrumb-product').textContent = product.shortName;
+      document.getElementById('current-price').textContent     = `₹${product.price.toLocaleString('en-IN')}`;
+      document.getElementById('mrp').textContent               = `₹${product.mrp.toLocaleString('en-IN')}`;
+      document.getElementById('discount').textContent          = `-${product.discount}% OFF`;
+      document.getElementById('badge-discount').textContent    = `${product.discount}% OFF`;
+      document.getElementById('stock-count-mini').textContent  = `Only ${product.stockCount} left in stock — order soon!`;
+      document.getElementById('product-story').textContent     = product.story?.substring(0, 220) + '…';
+      document.getElementById('hero-rating-score').textContent = product.rating.toFixed(1);
+      document.getElementById('hero-rating-count').textContent = `(${product.reviewCount} reviews)`;
+      document.getElementById('wishlist-count-text').textContent = product.wishlistCount;
+
+      // Bestseller badge
+      if (product.isBestseller) {
+        document.getElementById('badge-bestseller').style.display = 'inline-flex';
+      }
+
+      // ── Rating stars ──
+      const starsEl = document.getElementById('hero-stars');
+      if (starsEl) {
+        for (let i = 0; i < 5; i++) {
+          const s = document.createElement('span');
+          s.className = 'hero-star';
+          s.textContent = i < Math.round(product.rating) ? '★' : '☆';
+          starsEl.appendChild(s);
+        }
+      }
+
+      // ── Colour variants ──
+      const colourSel  = document.getElementById('colour-selector');
+      const colourName = document.getElementById('selected-colour-name');
+      (product.colorVariants || []).forEach(v => {
+        const dot = document.createElement('div');
+        dot.className = `colour-dot${v.active ? ' active' : ''}`;
+        dot.style.background = `linear-gradient(135deg, ${v.gradient.join(', ')})`;
+        dot.title = v.name;
+        if (v.active && colourName) colourName.textContent = v.name;
+        dot.onclick = () => {
+          if (v.active) return;
+          window.location.href = `product.html?slug=${v.slug}`;
+        };
+        colourSel.appendChild(dot);
+      });
+
+      // ── Gallery ──
+      const thumbStrip = document.getElementById('thumbnail-strip');
+      const mainView   = document.getElementById('main-view');
+      const counterEl  = document.getElementById('gallery-counter');
+      const expandBtn  = document.getElementById('expand-btn');
+      const imgArr     = Object.values(product.images).filter(img => !!img.url);
+      let currentIdx   = 0;
+
+      if (counterEl) counterEl.textContent = `1 / ${imgArr.length}`;
+
+      function setMain(img, idx) {
+        currentIdx = idx;
+        if (counterEl) counterEl.textContent = `${idx + 1} / ${imgArr.length}`;
+        mainView.style.background = '';
+        // Keep counter and expand button visible
+        const counter = mainView.querySelector('#gallery-counter');
+        const expand  = mainView.querySelector('#expand-btn');
+        mainView.innerHTML = `<img id="zoom-img" src="${img.url}" alt="${img.alt}"
+          style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);display:block">`;
+        if (counter) mainView.appendChild(counter);
+        if (expand)  mainView.appendChild(expand);
+        const zoomImg = document.getElementById('zoom-img');
+        mainView.style.overflow = 'hidden';
+        mainView.onmousemove = e => {
+          const { left, top, width, height } = mainView.getBoundingClientRect();
+          zoomImg.style.transformOrigin = `${((e.clientX-left)/width*100)}% ${((e.clientY-top)/height*100)}%`;
+          zoomImg.style.transform = 'scale(2.2)';
+        };
+        mainView.onmouseleave = () => { zoomImg.style.transform = 'scale(1)'; };
+      }
+
+      imgArr.forEach((img, idx) => {
+        const t = document.createElement('div');
+        t.className = `thumb${idx === 0 ? ' active' : ''}`;
+        t.innerHTML = `<img src="${img.url}" alt="${img.alt}" style="width:100%;height:100%;object-fit:cover;border-radius:8px">`;
+        t.onclick = () => {
+          document.querySelectorAll('.thumb').forEach(th => th.classList.remove('active'));
+          t.classList.add('active');
+          setMain(img, idx);
+        };
+        t.addEventListener('dblclick', () => { window.openLightbox && window.openLightbox(idx); });
+        thumbStrip.appendChild(t);
+      });
+
+      if (imgArr.length > 0) setMain(imgArr[0], 0);
+
+      // Keyboard navigation on gallery
+      document.addEventListener('keydown', e => {
+        const lb = document.getElementById('lightbox');
+        if (lb && lb.style.display !== 'none') return; // lightbox handles it
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          const prev = (currentIdx - 1 + imgArr.length) % imgArr.length;
+          document.querySelectorAll('.thumb')[prev]?.click();
+        }
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          const next = (currentIdx + 1) % imgArr.length;
+          document.querySelectorAll('.thumb')[next]?.click();
+        }
+      });
+
+      // Expand button → open lightbox
+      expandBtn?.addEventListener('click', e => {
+        e.stopPropagation();
+        window.openLightbox && window.openLightbox(currentIdx);
+      });
+
+      // Click main → lightbox
+      mainView.addEventListener('click', () => {
+        window.openLightbox && window.openLightbox(currentIdx);
+      });
+    })();
+
+    // Size selector helper
+    function selectSize(el) {
+      document.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Wishlist button
+    document.getElementById('wishlist-btn')?.addEventListener('click', function() {
+      const slug    = new URLSearchParams(window.location.search).get('slug');
+      const product = getProductBySlug(slug);
+      if (product) wishlistToggle(product);
+    });
+  </script>
+</body>
+</html>

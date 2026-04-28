@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections | House of Urvaah</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">House of Urvaah</a>
+        <div class="nav-links" id="mobile-menu">
+            <a href="collections.html?cat=sarees">Sarees</a>
+            <a href="collections.html?cat=menswear">Menswear</a>
+            <a href="collections.html?cat=couples">Couples</a>
+            <a href="#">New Arrivals</a>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-icon"><i data-lucide="search"></i></div>
+            <div class="nav-icon"><i data-lucide="heart"></i><span class="count-badge wishlist-count">0</span></div>
+            <div class="nav-icon"><i data-lucide="shopping-bag"></i><span class="count-badge cart-count">0</span></div>
+            <div class="nav-icon mobile-toggle" id="menu-toggle"><i data-lucide="menu"></i></div>
+        </div>
+    </nav>
+    <script src="js/main.js"></script>
+
+    <main class="container" style="padding-top: 120px;">
+        <header style="margin-bottom: 60px; text-align: center;">
+            <h1 id="collection-title" style="font-size: 48px; margin-bottom: 15px; text-transform: capitalize;"></h1>
+            <p id="collection-desc" style="color: var(--text-muted); max-width: 600px; margin: 0 auto;"></p>
+        </header>
+
+        <div id="collection-grid" class="product-grid">
+            <!-- Injected by JS -->
+        </div>
+    </main>
+
+    <footer style="padding: 100px 0; border-top: 1px solid var(--border-default); text-align: center; margin-top: 100px;">
+        <div class="container">
+            <h2 style="font-size: 32px; margin-bottom: 20px;">House of Urvaah</h2>
+            <div style="font-size: 12px; color: var(--text-muted);">
+                © 2026 House of Urvaah. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        lucide.createIcons();
+
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('cat') || 'sarees';
+        const products = getProductsByCategory(cat.charAt(0).toUpperCase() + cat.slice(1));
+
+        document.getElementById('collection-title').innerText = cat;
+        document.getElementById('collection-desc').innerText = `Explore our curated collection of ${cat}, where tradition meets modern sophistication.`;
+
+        const grid = document.getElementById('collection-grid');
+        
+        if (products.length === 0) {
+            grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; padding: 100px 0;">No products found in this collection.</p>';
+        } else {
+            products.forEach(product => {
+                const card = document.createElement('a');
+                card.href = `product.html?slug=${product.slug}`;
+                card.className = 'product-card';
+                
+                const mainImg = product.images.find(i => i.url) || product.images[0];
+                const imgHtml = mainImg.url 
+                    ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}">`
+                    : `<div class="product-image shimmer" style="background: linear-gradient(135deg, ${product.thumbnailGradient.join(', ')})"></div>`;
+
+                card.innerHTML = `
+                    <div class="product-image-container">
+                        ${imgHtml}
+                    </div>
+                    <div class="product-info">
+                        <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory}</p>
+                        <h3>${product.shortName}</h3>
+                        <p class="product-price">Rs. ${product.price.toLocaleString()}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>

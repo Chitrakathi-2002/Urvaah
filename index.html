@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House of Urvaah | Premium Luxury Ethnic Wear</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">House of Urvaah</a>
+        <div class="nav-links" id="mobile-menu">
+            <a href="collections.html?cat=sarees">Sarees</a>
+            <a href="collections.html?cat=menswear">Menswear</a>
+            <a href="collections.html?cat=couples">Couples</a>
+            <a href="#">New Arrivals</a>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-icon"><i data-lucide="search"></i></div>
+            <div class="nav-icon"><i data-lucide="heart"></i><span class="count-badge wishlist-count">0</span></div>
+            <div class="nav-icon"><i data-lucide="shopping-bag"></i><span class="count-badge cart-count">0</span></div>
+            <div class="nav-icon mobile-toggle" id="menu-toggle"><i data-lucide="menu"></i></div>
+        </div>
+    </nav>
+    <script src="js/main.js"></script>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-subtitle">Heritage Reimagined</p>
+                <h1 class="hero-title">Timeless Elegance</h1>
+                <a href="collections.html?cat=sarees" class="btn btn-primary">Shop the Collection</a>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 style="text-align: center; font-size: 40px; margin-bottom: 60px;">Our Bestsellers</h2>
+            <div id="bestseller-grid" class="product-grid">
+                <!-- Injected by JS -->
+            </div>
+        </section>
+
+        <section style="background-color: var(--bg-surface);">
+            <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div>
+                    <h2 style="font-size: 48px; margin-bottom: 30px;">Authentic Craftsmanship</h2>
+                    <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 40px;">
+                        Each piece at House of Urvaah is a testament to India's rich weaving heritage. 
+                        From the looms of Kanchipuram to the weavers of Banaras, we bring you only the finest.
+                    </p>
+                    <a href="#" class="btn btn-outline">Our Story</a>
+                </div>
+                <div style="aspect-ratio: 4/5; border-radius: 30px; overflow: hidden; background: linear-gradient(45deg, #6B1F2A, #C9A84C);" class="shimmer">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 100px 0; border-top: 1px solid var(--border-default); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 32px; margin-bottom: 20px;">House of Urvaah</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 40px;">
+                Join our newsletter for exclusive previews and styling tips.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 60px;">
+                <input type="email" placeholder="Enter your email" style="padding: 15px 30px; border-radius: 100px; border: 1px solid var(--border-default); width: 300px;">
+                <button class="btn btn-primary">Subscribe</button>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted);">
+                © 2026 House of Urvaah. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Load Bestsellers
+        const grid = document.getElementById('bestseller-grid');
+        PRODUCTS.forEach(product => {
+            const card = document.createElement('a');
+            card.href = `product.html?slug=${product.slug}`;
+            card.className = 'product-card';
+            
+            const mainImg = product.images.find(i => i.url) || product.images[0];
+            const imgHtml = mainImg.url 
+                ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}">`
+                : `<div class="product-image shimmer" style="background: linear-gradient(135deg, ${product.thumbnailGradient.join(', ')})"></div>`;
+
+            card.innerHTML = `
+                <div class="product-image-container">
+                    ${imgHtml}
+                    <div style="position: absolute; top: 15px; right: 15px;">
+                        <i data-lucide="heart" style="color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></i>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory}</p>
+                    <h3>${product.shortName}</h3>
+                    <p class="product-price">Rs. ${product.price.toLocaleString()}</p>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap');
+
+/* ══ LIGHT THEME (DEFAULT) ══ */
+:root,
+[data-theme="light"] {
+  --bg-page:          #FAF6EF;
+  --bg-surface:       #F0EAE0;
+  --bg-surface-2:     #E8DDD0;
+  --text-primary:     #1A0F00;
+  --text-secondary:   #4A3520;
+  --text-muted:       #8A7060;
+  --gold:             #B8922A;
+  --gold-light:       #D4AA50;
+  --gold-glow:        rgba(184,146,42,0.20);
+  --maroon:           #6B1F2A;
+  --maroon-light:     rgba(107,31,42,0.10);
+  --border-default:   rgba(184,146,42,0.25);
+  --border-strong:    rgba(184,146,42,0.55);
+  --shadow-card:      0 4px 24px rgba(26,15,0,0.10);
+  --shadow-hover:     0 12px 40px rgba(26,15,0,0.16);
+  --card-bg:          #FFFFFF;
+  --input-bg:         #FFFFFF;
+  --scrollbar-thumb:  rgba(184,146,42,0.40);
+  --green-success:    #2D9B6E;
+  --red-urgency:      #C0392B;
+  --orange-warm:      #E87A35;
+  --header-height:    72px;
+}
+
+/* ══ DARK THEME ══ */
+[data-theme="dark"] {
+  --bg-page:          #0A0A0F;
+  --bg-surface:       #12100e;
+  --bg-surface-2:     #1a1208;
+  --text-primary:     #F5EDD6;
+  --text-secondary:   #C4B49A;
+  --text-muted:       #8A7060;
+  --gold:             #C9A84C;
+  --gold-light:       #F0D080;
+  --gold-glow:        rgba(201,168,76,0.20);
+  --maroon:           #6B1F2A;
+  --maroon-light:     rgba(107,31,42,0.20);
+  --border-default:   rgba(201,168,76,0.20);
+  --border-strong:    rgba(201,168,76,0.55);
+  --shadow-card:      0 4px 24px rgba(0,0,0,0.40);
+  --shadow-hover:     0 12px 40px rgba(0,0,0,0.60);
+  --card-bg:          rgba(255,255,255,0.04);
+  --input-bg:         rgba(255,255,255,0.05);
+  --scrollbar-thumb:  rgba(201,168,76,0.40);
+  --green-success:    #2D9B6E;
+  --red-urgency:      #E87A7A;
+  --orange-warm:      #F0A060;
+  --header-height:    72px;
+}
+
+/* ══ GLOBAL RESET ══ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.3s ease;
+  line-height: 1.6;
+}
+
+html { scroll-behavior: smooth; }
+
+::selection { background: var(--gold-glow); color: var(--text-primary); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; }
+
+/* ══ TYPOGRAPHY ══ */
+h1,h2,h3,h4,h5,h6 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+
+/* ══ SHARED KEYFRAMES ══ */
+@keyframes silkShimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes tickFlip {
+  0%   { transform: rotateX(0deg);   opacity: 1; }
+  49%  { transform: rotateX(-90deg); opacity: 0; }
+  51%  { transform: rotateX(90deg);  opacity: 0; }
+  100% { transform: rotateX(0deg);   opacity: 1; }
+}
+
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@keyframes shimmerSweep {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 0%); }
+}
+
+@keyframes goldPulse {
+  0%,100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+  50%      { box-shadow: 0 0 0 12px transparent; }
+}

@@ -59,15 +59,19 @@ function initBrandStory(p) {
     const testImg = new Image();
     testImg.onerror = () => applyGradient(mainImg, p.images.worn?.gradient || p.gradientColors);
     testImg.src = 'assets/brand_story_artisan.png';
-  }
-  if (detImg) {
-    detImg.style.backgroundImage    = `url('${p.images.worn?.url || ''}')`;
-    detImg.style.backgroundSize     = 'cover';
-    detImg.style.backgroundPosition = 'center';
-    const testImg2 = new Image();
-    testImg2.onerror = () => applyGradient(detImg, p.images.detail?.gradient || p.gradientColors);
-    testImg2.src = p.images.worn?.url || '';
-    if (!p.images.worn?.url) applyGradient(detImg, p.images.detail?.gradient || p.gradientColors);
+    if (detImg) {
+      const fallbackUrl = p.category === 'Menswear' 
+        ? 'assets/mens_luxury_detail_gold_embroidery_1777401762368.png' 
+        : 'assets/prod_001_detail.png';
+      
+      const storyDetUrl = p.images.worn?.url || p.images.detail?.url || fallbackUrl;
+      detImg.style.backgroundImage    = `url('${storyDetUrl}')`;
+      detImg.style.backgroundSize     = 'cover';
+      detImg.style.backgroundPosition = 'center';
+      
+      // If we still want a shimmer effect behind it for loading
+      detImg.classList.add('silk-swatch');
+    }
   }
 }
 
@@ -109,8 +113,8 @@ function initVideoSection(p) {
             <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
           </button>
           <div style="text-align:center">
-            <p style="font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:6px">${p.video?.label || 'Watch the Making'}</p>
-            <p style="font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:1px">DRAPING TUTORIAL · COMING SOON</p>
+            <p style="font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:6px">${p.video?.label || 'The Making of a Masterpiece'}</p>
+            <p style="font-size:13px;color:rgba(255,255,255,0.75);letter-spacing:1px">${p.category === 'Menswear' ? 'FITTING' : 'DRAPING'} TUTORIAL · COMING SOON</p>
           </div>
           <div style="display:flex;gap:24px;margin-top:8px">
             <div style="text-align:center;color:rgba(255,255,255,0.8)">
@@ -142,9 +146,9 @@ function initFabricAccordion(p) {
       return `<table class="fabric-spec-table"><tbody>${rows}</tbody></table>`;
     })(),
     `<table class="fabric-spec-table"><tbody>
-      <tr><td>Saree Length</td><td>${p.fabricDetails['Saree Length'] || '5.5 Meters'}</td></tr>
-      <tr><td>Blouse Piece</td><td>${p.fabricDetails['Blouse Piece'] || '0.8 Meters'}</td></tr>
-      <tr><td>Weight</td><td>${p.fabricDetails['Weight'] || 'N/A'}</td></tr>
+      <tr><td>${p.category === 'Menswear' ? 'Top Length' : 'Saree Length'}</td><td>${p.fabricDetails['Length'] || 'N/A'}</td></tr>
+      <tr><td>${p.category === 'Menswear' ? 'Bottom Style' : 'Blouse Piece'}</td><td>${p.fabricDetails['Style'] || p.fabricDetails['Blouse Piece'] || 'Included'}</td></tr>
+      <tr><td>Origin</td><td>${p.origin || 'N/A'}</td></tr>
      </tbody></table>
      <p style="margin-top:12px;font-size:13px;color:var(--text-muted)">
        Need help? <button onclick="openSizeGuide()" style="background:none;border:none;
@@ -243,7 +247,12 @@ function initReviews(p) {
   // UGC grid — mix real photos and gradient tiles
   const ugcGrid = document.getElementById('ugc-grid');
   if (ugcGrid) {
-    const ugcItems = [
+    const ugcItems = p.category === 'Menswear' ? [
+      { img: 'assets/prod_007_main.png',  gradient: ['#1a5c40','#2d9b6e'] },
+      { img: 'assets/influencer_6.png',   gradient: ['#0d2b5e','#1a4fa0'] },
+      { img: 'assets/prod_007_main.png',  gradient: ['#F5EDD6','#C9A84C'] }, // Sherwani placeholder
+      { img: 'assets/influencer_6.png',   gradient: ['#0A1A2F','#1A2F4F'] },
+    ] : [
       { img: 'assets/ugc_1.png',         gradient: ['#6B1F2A','#C9A84C'] },
       { img: 'assets/ugc_2.png',         gradient: ['#FADADD','#F5D0D4'] },
       { img: 'assets/influencer_1.png',  gradient: ['#3d0a10','#6B1F2A'] },
@@ -302,6 +311,15 @@ function initReviews(p) {
     });
     renderReviewCards(sorted);
   });
+
+  // Carousel Arrows
+  const cards = document.getElementById('review-cards');
+  const prev  = document.getElementById('review-prev');
+  const next  = document.getElementById('review-next');
+  if (cards && prev && next) {
+    prev.addEventListener('click', () => cards.scrollBy({ left: -340, behavior: 'smooth' }));
+    next.addEventListener('click', () => cards.scrollBy({ left: 340, behavior: 'smooth' }));
+  }
 }
 
 function renderReviewCards(reviews) {
@@ -351,7 +369,12 @@ window.markHelpful = function(btn, id, count) {
 function initInfluencerGrid(p) {
   const grid = document.getElementById('influencer-grid');
   if (!grid) return;
-  const data = [
+  const data = p.category === 'Menswear' ? [
+    { name: 'Arjun Khanna',  handle: '@arjun.style',   followers: '156K', occasion: 'Groom look',     img: 'assets/influencer_6.png' },
+    { name: 'Kabir Singh',   handle: '@kabir_fits',    followers: '92K',  occasion: 'Cocktail look',  img: 'assets/prod_007_main.png' },
+    { name: 'Rohan Mehra',   handle: '@rohan_ethnic',  followers: '230K', occasion: 'Reception look', img: 'assets/influencer_6.png' },
+    { name: 'Ishaan Verma',  handle: '@ishaan_v',      followers: '64K',  occasion: 'Festive look',    img: 'assets/prod_007_main.png' },
+  ] : [
     { name: 'Priya Sharma',  handle: '@priya.eth',      followers: '124K', occasion: 'Wedding look',   img: 'assets/influencer_1.png' },
     { name: 'Meera Nair',    handle: '@meera_looks',    followers: '89K',  occasion: 'Sangeet look',   img: 'assets/influencer_2.png' },
     { name: 'Anu Krishnan',  handle: '@anufashion',     followers: '210K', occasion: 'Reception look', img: 'assets/influencer_3.png' },
@@ -395,7 +418,29 @@ function initSizeGuideModal(p) {
   const modal   = document.getElementById('size-guide-modal');
   const content = modal?.querySelector('.size-guide-content');
   if (!modal || !content) return;
-  content.innerHTML = `
+  const guideContent = p.category === 'Menswear' ? `
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px">
+      Use this guide to find the perfect fit for your Sherwani or Kurta.
+    </p>
+    <h4 style="color:var(--gold);margin-bottom:10px;font-family:'Playfair Display',serif">Sherwani / Kurta Size Chart</h4>
+    <table class="size-table">
+      <thead><tr><th>Size</th><th>Chest (Inches)</th><th>Shoulder (Inches)</th></tr></thead>
+      <tbody>
+        <tr><td>S</td><td>36 - 38</td><td>17.0</td></tr>
+        <tr><td>M</td><td>39 - 41</td><td>18.0</td></tr>
+        <tr><td>L</td><td>42 - 44</td><td>19.0</td></tr>
+        <tr><td>XL</td><td>45 - 47</td><td>20.0</td></tr>
+        <tr><td>XXL</td><td>48 - 50</td><td>21.0</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px;padding:16px;background:var(--bg-surface);border-radius:12px;">
+      <p style="font-size:13px;color:var(--text-secondary)">💬 Need custom tailoring? Chat with our experts.</p>
+      <a href="https://wa.me/919876543210?text=I need help with menswear sizing"
+         target="_blank" class="btn-review-wa" style="display:inline-flex;margin-top:12px">
+        Chat with Fit Expert
+      </a>
+    </div>
+  ` : `
     <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px">
       Use this guide to find the perfect saree length and blouse fabric for your fit.
     </p>
@@ -426,6 +471,7 @@ function initSizeGuideModal(p) {
         Chat with Style Expert
       </a>
     </div>`;
+  content.innerHTML = guideContent;
 
   document.getElementById('close-size-modal')?.addEventListener('click', closeSizeGuide);
   modal.addEventListener('click', e => { if (e.target === modal) closeSizeGuide(); });

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cart-drawer.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/wishlist.css">
+    <link rel="stylesheet" href="css/outfit-builder.css"> <!-- for reco cards -->
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <div class="announcement-bar">
+        <div class="marquee-track">
+          <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦</span>
+        </div>
+      </div>
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <ul class="nav-links">
+          <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+          <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+          <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+          <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+          <li><a href="index.html#occasions">Occasions</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+          <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="wishlist-badge nav-badge">0</span>
+          </a>
+          <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon">🌙</span>
+          </button>
+          <button class="nav-icon-btn" onclick="CartDrawer.open()" title="Cart">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge nav-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+      <ul class="mobile-nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html">Outfit Builder</a></li>
+        <li><a href="wishlist.html">My Wishlist</a></li>
+        <li><a href="cart.html">My Cart</a></li>
+      </ul>
+    </div>
+
+    <main class="wishlist-page">
+        <header class="wishlist-header">
+            <h1>My Wishlist <span id="wishlist-count" style="font-family:'DM Sans',sans-serif; font-size:18px; color:var(--text-muted);">(0 items)</span></h1>
+        </header>
+
+        <div id="wishlist-grid" class="wishlist-grid">
+            <!-- Injected by JS -->
+        </div>
+
+        <div id="wishlist-empty" class="wishlist-empty" style="display:none;">
+            <div class="icon">♡</div>
+            <h2>Your wishlist is empty</h2>
+            <p style="color:var(--text-muted); margin-bottom:30px;">Save items you love and find them easily later.</p>
+            <a href="collection.html" class="btn btn-primary">Browse Collection →</a>
+            
+            <div style="margin-top:80px; width:100%;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:24px; margin-bottom:40px;">Our Bestsellers</h3>
+                <div id="bestseller-reco" class="wishlist-grid">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+        <!-- Content will be rendered by JS -->
+    </aside>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/data/outfit-parts.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart-drawer.js"></script>
+    <script src="js/recommendations.js"></script>
+    <script src="js/wishlist.js"></script>
+</body>
+</html>

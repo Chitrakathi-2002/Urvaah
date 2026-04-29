@@ -7,39 +7,73 @@
   <meta name="description" content="Luxury Indian ethnic wear — House of Urvaah">
   <link rel="stylesheet" href="css/globals.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/cart-drawer.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/product-hero.css">
   <link rel="stylesheet" href="css/product-detail.css">
   <link rel="stylesheet" href="css/outfit-builder.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    (function(){
+      var t = localStorage.getItem('urvaah-theme')||'light';
+      document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
 </head>
 <body>
 
   <!-- ═══ NAVBAR ═══ -->
-  <nav>
-    <a href="index.html" class="nav-logo">House of Urvaah</a>
-    <div class="nav-links" id="mobile-menu">
-      <a href="collections.html?cat=sarees">Sarees</a>
-      <a href="collections.html?cat=menswear">Menswear</a>
-      <a href="collections.html?cat=couples">Couples</a>
-      <a href="outfit-builder.html" style="color: var(--gold); font-weight: 700;">Outfit Builder</a>
-      <a href="#">New Arrivals</a>
-    </div>
-    <div class="nav-actions">
-      <div class="nav-icon" title="Search"><i data-lucide="search"></i></div>
-      <div class="nav-icon" title="Wishlist">
-        <i data-lucide="heart"></i><span class="count-badge wishlist-count">0</span>
-      </div>
-      <div class="nav-icon" data-theme-toggle title="Toggle theme">
-        <i data-lucide="moon"></i>
-      </div>
-      <div class="nav-icon" title="Cart">
-        <i data-lucide="shopping-bag"></i><span class="count-badge cart-count">0</span>
-      </div>
-      <div class="nav-icon mobile-toggle" id="menu-toggle" aria-label="Menu">
-        <i data-lucide="menu"></i>
+  <header class="navbar" id="navbar">
+    <div class="announcement-bar">
+      <div class="marquee-track">
+        <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available ✦</span>
       </div>
     </div>
-  </nav>
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+      <ul class="nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+        <li><a href="index.html#occasions">Occasions</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="search-btn" class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+        <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+          <i data-lucide="heart"></i>
+          <span class="wishlist-badge nav-badge">0</span>
+        </a>
+        <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+          <span class="toggle-sun">☀️</span>
+          <span class="toggle-moon">🌙</span>
+        </button>
+        <button id="cart-btn" class="nav-icon-btn cart-btn-nav" onclick="CartDrawer.open()" title="Cart">
+          <i data-lucide="shopping-bag"></i>
+          <span class="cart-badge nav-badge">0</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+    <ul class="mobile-nav-links">
+      <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+      <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+      <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+      <li><a href="outfit-builder.html">Outfit Builder</a></li>
+      <li><a href="wishlist.html">My Wishlist</a></li>
+      <li><a href="cart.html">My Cart</a></li>
+    </ul>
+  </div>
 
   <!-- ═══ PRODUCT HERO ═══ -->
   <main>
@@ -304,8 +338,12 @@
           <p class="ugc-label">📸 Customer Photos</p>
           <div class="ugc-grid" id="ugc-grid"></div>
         </div>
-        <div class="review-cards" id="review-cards"></div>
-        <button class="load-more-btn" id="load-more-reviews">Load More Reviews</button>
+        <div class="reviews-carousel-wrapper">
+          <button class="review-scroll-arrow left" id="review-prev">‹</button>
+          <div class="review-cards" id="review-cards"></div>
+          <button class="review-scroll-arrow right" id="review-next">›</button>
+        </div>
+        <button class="load-more-btn" id="load-more-reviews" style="display:none">Load More Reviews</button>
         <div class="write-review-cta">
           <p>Bought this product? Share your look!</p>
           <a href="https://wa.me/919876543210?text=I want to share my review" target="_blank" class="btn-review-wa">
@@ -432,6 +470,13 @@
                   </g>
                 </g>
 
+                <!-- COMPOSITE PREVIEW LAYERS (Phase 1: Real-time draping) -->
+                <g id="preview-layers-women" class="preview-group">
+                  <image id="layer-blouse-women" x="78" y="104" width="124" height="96" opacity="0" style="transition: opacity 0.5s ease; pointer-events: none;"/>
+                  <image id="layer-jewellery-women" x="120" y="80" width="40" height="30" opacity="0" style="transition: opacity 0.5s ease; pointer-events: none;"/>
+                  <image id="layer-footwear-women" x="120" y="440" width="40" height="35" opacity="0" style="transition: opacity 0.5s ease; pointer-events: none;"/>
+                </g>
+
                 <!-- SELECTED ZONE HIGHLIGHT OVERLAY (JS toggles visibility per zone) -->
                 <rect class="zone-highlight" id="highlight-jewellery"
                       x="120" y="80" width="40" height="30"
@@ -466,10 +511,16 @@
                 <path d="M68,140 Q44,158 38,220 Q52,228 62,218 Q72,180 82,155 Z"
                       fill="var(--bg-surface-2)" stroke="var(--border-default)" stroke-width="1" opacity="0.8"
                       class="zone-area" data-zone="stole" id="zone-stole-men"/>
-                <!-- Feet -->
                 <path d="M90,440 Q88,480 85,510 Q112,518 140,516 Q168,518 195,510 Q192,480 190,440 Z"
                       fill="var(--bg-surface)" stroke="var(--border-default)" stroke-width="1"
                       class="zone-area" data-zone="footwear"/>
+                
+                <!-- COMPOSITE PREVIEW LAYERS MEN -->
+                <g id="preview-layers-men" class="preview-group">
+                  <image id="layer-headwear-men" x="110" y="10" width="60" height="60" opacity="0" style="transition: opacity 0.5s ease; pointer-events: none;"/>
+                  <image id="layer-jacket-men" x="90" y="96" width="122" height="184" opacity="0" style="transition: opacity 0.5s ease; pointer-events: none;"/>
+                </g>
+
                 <!-- Men hotspot pins -->
                 <g id="hotspots-men">
                   <g class="hotspot-pin" data-zone="headwear" transform="translate(175,40)">
@@ -638,9 +689,39 @@
 
   <!-- SCRIPTS — order matters -->
   <script src="js/data/products.js"></script>
+  <!-- Cart Drawer Overlay -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h2 class="drawer-title">🛒 Your Cart <span class="drawer-count" id="drawer-count">(0 items)</span></h2>
+      <button class="drawer-close" onclick="CartDrawer.close()">✕</button>
+    </div>
+    <div class="shipping-progress">
+      <p class="shipping-msg" id="shipping-msg"></p>
+      <div class="shipping-track"><div class="shipping-fill" id="shipping-fill"></div></div>
+    </div>
+    <div class="drawer-items" id="drawer-items"></div>
+    <div class="drawer-empty" id="drawer-empty" style="display:none">
+      <div class="empty-icon">🛒</div>
+      <h3>Your cart is empty</h3>
+      <a href="collection.html" class="btn-browse" onclick="CartDrawer.close()">Browse Collection →</a>
+    </div>
+    <div class="drawer-footer" id="drawer-footer">
+      <div class="drawer-subtotal">
+        <div class="subtotal-row"><span>Subtotal</span><span id="drawer-subtotal">Rs. 0</span></div>
+        <div class="subtotal-row saving-row"><span>You Save</span><span id="drawer-saving" class="saving-amount"></span></div>
+      </div>
+      <a href="checkout.html" class="btn-checkout-drawer">Proceed to Checkout →</a>
+      <a href="cart.html" class="btn-view-cart">View Full Cart</a>
+    </div>
+  </aside>
+
+  <script src="js/data/products.js"></script>
   <script src="js/data/outfit-parts.js"></script>
   <script src="js/data/reviews.js"></script>
   <script src="js/globals.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/cart-drawer.js"></script>
   <script src="js/product-detail.js"></script>
   <script src="js/outfit-builder.js"></script>
   <script src="js/recommendations.js"></script>
@@ -675,12 +756,57 @@
       // ── Rating stars ──
       const starsEl = document.getElementById('hero-stars');
       if (starsEl) {
+        starsEl.innerHTML = ''; // Clear existing
         for (let i = 0; i < 5; i++) {
           const s = document.createElement('span');
           s.className = 'hero-star';
           s.textContent = i < Math.round(product.rating) ? '★' : '☆';
           starsEl.appendChild(s);
         }
+      }
+
+      // ── Size Selector ──
+      const sizeSelectorWrap = document.querySelector('.size-selector');
+      const sizeLabel = sizeSelectorWrap.querySelector('.hero-section-label');
+
+      // Clear existing options
+      sizeSelectorWrap.querySelectorAll('.size-option').forEach(o => o.remove());
+
+      if (product.category === 'Menswear') {
+        sizeLabel.textContent = 'Select Chest Size (Inches)';
+        ['38', '40', '42', '44'].forEach(sz => {
+          const opt = document.createElement('div');
+          opt.className = 'size-option';
+          opt.innerHTML = `
+            <div style="font-weight:700;font-size:14px;font-family:'DM Sans',sans-serif">${sz}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Fits chest size ${sz}" · Slim fit</div>
+          `;
+          opt.onclick = () => {
+            sizeSelectorWrap.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+            opt.classList.add('active');
+          };
+          sizeSelectorWrap.appendChild(opt);
+        });
+        sizeSelectorWrap.querySelector('.size-option').classList.add('active');
+      } else {
+        sizeLabel.textContent = 'Select Length';
+        [
+          { name: 'Standard — 5.5m', sub: 'Saree + 0.8m matching blouse piece included' },
+          { name: 'Saree Only', sub: '5.5m length · No blouse piece' }
+        ].forEach(optData => {
+          const opt = document.createElement('div');
+          opt.className = 'size-option';
+          opt.innerHTML = `
+            <div style="font-weight:700;font-size:14px;font-family:'DM Sans',sans-serif">${optData.name}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${optData.sub}</div>
+          `;
+          opt.onclick = () => {
+            sizeSelectorWrap.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+            opt.classList.add('active');
+          };
+          sizeSelectorWrap.appendChild(opt);
+        });
+        sizeSelectorWrap.querySelector('.size-option').classList.add('active');
       }
 
       // ── Colour variants ──
@@ -694,7 +820,7 @@
         if (v.active && colourName) colourName.textContent = v.name;
         dot.onclick = () => {
           if (v.active) return;
-          window.location.href = `product.html?slug=${v.slug}`;
+          window.location.href = `product-detail.html?slug=${v.slug}`;
         };
         colourSel.appendChild(dot);
       });

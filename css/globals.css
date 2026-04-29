@@ -4,12 +4,14 @@
 :root,
 [data-theme="light"] {
   --bg-page:          #FAF6EF;
+  --bg-page-rgb:      250, 246, 239;
   --bg-surface:       #F0EAE0;
   --bg-surface-2:     #E8DDD0;
   --text-primary:     #1A0F00;
   --text-secondary:   #4A3520;
   --text-muted:       #8A7060;
   --gold:             #B8922A;
+  --gold-rgb:         184, 146, 42;
   --gold-light:       #D4AA50;
   --gold-glow:        rgba(184,146,42,0.20);
   --maroon:           #6B1F2A;
@@ -30,12 +32,14 @@
 /* ══ DARK THEME ══ */
 [data-theme="dark"] {
   --bg-page:          #0A0A0F;
+  --bg-page-rgb:      10, 10, 15;
   --bg-surface:       #12100e;
   --bg-surface-2:     #1a1208;
   --text-primary:     #F5EDD6;
   --text-secondary:   #C4B49A;
   --text-muted:       #8A7060;
   --gold:             #C9A84C;
+  --gold-rgb:         201, 168, 76;
   --gold-light:       #F0D080;
   --gold-glow:        rgba(201,168,76,0.20);
   --maroon:           #6B1F2A;
@@ -133,4 +137,26 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Playfair Display', serif; line-height: 1.2; }
 @keyframes goldPulse {
   0%,100% { box-shadow: 0 0 0 0 var(--gold-glow); }
   50%      { box-shadow: 0 0 0 12px transparent; }
+}
+
+/* Silk Texture Overlay */
+.silk-swatch {
+  position: relative;
+  overflow: hidden;
+}
+.silk-swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.silk-swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
 }

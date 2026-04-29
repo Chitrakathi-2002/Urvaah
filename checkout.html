@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <nav class="nav-inner" style="justify-content: space-between;">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <div class="checkout-badge" style="font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:2px; font-weight:700; display:flex; align-items:center; gap:8px;">
+          <span style="color:var(--gold);">✦</span> SECURE CHECKOUT <span style="color:var(--gold);">✦</span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="checkout-page">
+        <!-- Progress Steps -->
+        <div class="checkout-steps">
+            <div class="step-item">
+                <div class="step-circle active" id="circle-1">1</div>
+                <div class="step-label active">Contact</div>
+            </div>
+            <div class="step-line" id="line-1"></div>
+            <div class="step-item">
+                <div class="step-circle" id="circle-2">2</div>
+                <div class="step-label">Delivery</div>
+            </div>
+            <div class="step-line" id="line-2"></div>
+            <div class="step-item">
+                <div class="step-circle" id="circle-3">3</div>
+                <div class="step-label">Payment</div>
+            </div>
+            <div class="step-line" id="line-3"></div>
+            <div class="step-item">
+                <div class="step-circle" id="circle-4">4</div>
+                <div class="step-label">Confirm</div>
+            </div>
+        </div>
+
+        <div class="checkout-layout">
+            <div class="checkout-form-col">
+                <!-- STEP 1: Contact Information -->
+                <section class="form-section active" id="section-contact">
+                    <h2 class="form-section-title">Contact Information</h2>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">Full Name <span>*</span></label>
+                            <input type="text" id="field-name" class="form-input" data-validate="name" placeholder="Enter your full name">
+                            <span class="form-error">Please enter at least 2 characters</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mobile Number <span>*</span></label>
+                            <input type="tel" id="field-phone" class="form-input" data-validate="phone" placeholder="10-digit mobile number">
+                            <span class="form-error">Enter a valid 10-digit mobile number</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address <span>*</span></label>
+                            <input type="email" id="field-email" class="form-input" data-validate="email" placeholder="email@example.com">
+                            <span class="form-error">Enter a valid email address</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-step1" style="margin-top:32px; width:100%;">Continue to Delivery →</button>
+                </section>
+
+                <!-- STEP 2: Delivery Address -->
+                <section class="form-section" id="section-delivery">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                        <h2 class="form-section-title" style="margin:0;">Delivery Address</h2>
+                        <button class="btn btn-outline" id="btn-detect-location" style="padding:8px 16px; font-size:12px;">Detect My Location 📍</button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">Address Line 1 <span>*</span></label>
+                            <input type="text" id="field-address1" class="form-input" data-validate="text" placeholder="House / Flat No., Building, Street">
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Address Line 2</label>
+                            <input type="text" id="field-address2" class="form-input" placeholder="Area, Locality, Landmark (Optional)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City <span>*</span></label>
+                            <input type="text" id="field-city" class="form-input" data-validate="text" placeholder="Your City">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pincode <span>*</span></label>
+                            <input type="text" id="field-pincode" class="form-input" data-validate="pincode" placeholder="6-digit pincode">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">State <span>*</span></label>
+                            <select id="field-state" class="state-select">
+                                <option value="">Select State</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <!-- More states added via JS if needed -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-input" value="India" disabled>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-step2" style="margin-top:32px; width:100%;">Continue to Payment →</button>
+                    <button class="btn-view-cart" style="margin-top:15px; width:100%;" onclick="goToStep(1)">← Back to Contact</button>
+                </section>
+
+                <!-- STEP 3: Payment Method -->
+                <section class="form-section" id="section-payment">
+                    <h2 class="form-section-title">Select Payment Method</h2>
+                    <div class="payment-options">
+                        <div class="payment-card" data-payment="prepaid">
+                            <div class="payment-card-header">
+                                <div class="payment-radio"></div>
+                                <div>
+                                    <div class="payment-label">Online Payment (Prepaid)</div>
+                                    <div class="payment-desc">UPI, Cards, Net Banking</div>
+                                </div>
+                            </div>
+                            <div class="payment-benefit">Extra 5% OFF with Prepaid — use code PREPAID5</div>
+                            <div class="payment-sub-options">
+                                <div class="form-group">
+                                    <label class="form-label">Card Details</label>
+                                    <input type="text" id="card-number" class="form-input" placeholder="XXXX XXXX XXXX XXXX">
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                                        <input type="text" id="card-expiry" class="form-input" placeholder="MM / YY">
+                                        <input type="password" id="card-cvv" class="form-input" placeholder="CVV">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-card" data-payment="cod">
+                            <div class="payment-card-header">
+                                <div class="payment-radio"></div>
+                                <div>
+                                    <div class="payment-label">Cash on Delivery (COD)</div>
+                                    <div class="payment-desc">Pay at your doorstep</div>
+                                </div>
+                            </div>
+                            <div class="payment-sub-options">
+                                <p style="font-size:12px; color:var(--text-muted);">Please keep the exact amount ready at the time of delivery.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="gift-wrap-badge" style="margin-top:20px; padding:12px; background:rgba(201,168,76,0.1); border-radius:10px; display:none; align-items:center; gap:10px; font-size:13px;">
+                        🎁 Free Gift Packaging included
+                    </div>
+
+                    <button class="btn-place-order" id="btn-place-order" disabled>Place Order →</button>
+                    <button class="btn-view-cart" style="margin-top:15px; width:100%;" onclick="goToStep(2)">← Back to Delivery</button>
+                </section>
+            </div>
+
+            <!-- RIGHT SUMMARY -->
+            <aside class="checkout-summary-panel">
+                <div style="background:var(--card-bg); border:1px solid var(--border-default); border-radius:24px; padding:32px; position:sticky; top:100px;">
+                    <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:20px;">Order Summary</h3>
+                    
+                    <div id="checkout-summary-items" style="max-height:300px; overflow-y:auto; margin-bottom:20px;">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <div class="summary-row"><span>Subtotal</span><span id="chk-subtotal">Rs. 0</span></div>
+                    <div class="summary-row"><span>Discount</span><span id="chk-discount" style="color:var(--green-success)">—</span></div>
+                    <div class="summary-row"><span>Shipping</span><span id="chk-shipping">FREE</span></div>
+                    
+                    <div class="summary-row total" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border-default); font-size:22px;">
+                        <span>Total</span>
+                        <span id="chk-total">Rs. 0</span>
+                    </div>
+
+                    <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:20px;">
+                        Prices are inclusive of all taxes.
+                    </p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

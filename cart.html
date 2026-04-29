@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cart-drawer.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/cart.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <div class="announcement-bar">
+        <div class="marquee-track">
+          <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦</span>
+        </div>
+      </div>
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <ul class="nav-links">
+          <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+          <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+          <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+          <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+          <li><a href="index.html#occasions">Occasions</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+          <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="wishlist-badge nav-badge">0</span>
+          </a>
+          <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon">🌙</span>
+          </button>
+          <button class="nav-icon-btn" onclick="CartDrawer.open()" title="Cart">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge nav-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+      <ul class="mobile-nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html">Outfit Builder</a></li>
+        <li><a href="wishlist.html">My Wishlist</a></li>
+        <li><a href="cart.html">My Cart</a></li>
+      </ul>
+    </div>
+
+    <main class="cart-page">
+        <div class="cart-layout" id="cart-has-items">
+            <div class="cart-items-col">
+                <h1 id="cart-heading">My Cart</h1>
+                <div id="cart-items-container">
+                    <!-- Injected by JS -->
+                </div>
+                
+                <a href="collection.html" style="text-decoration:none; color:var(--text-muted); font-size:14px; margin-top:20px; display:inline-block;">← Continue Shopping</a>
+
+                <div class="coupon-row">
+                    <input type="text" id="coupon-input" class="coupon-input" placeholder="Enter coupon code (e.g. URVAAH10)">
+                    <button class="btn btn-primary" id="btn-apply-coupon">Apply</button>
+                </div>
+                <p id="coupon-success" style="color:var(--green-success); font-size:12px; margin-top:8px; display:none;"></p>
+                <p id="coupon-error" style="color:var(--red-urgency); font-size:12px; margin-top:8px; display:none;"></p>
+            </div>
+
+            <aside class="cart-summary-panel">
+                <h2 class="summary-title">Order Summary</h2>
+                <div class="summary-row">
+                    <span>Items Total</span>
+                    <span id="summary-items">Rs. 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total Discount</span>
+                    <span id="summary-discount" style="color:var(--green-success)">- Rs. 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Coupon Discount</span>
+                    <span id="summary-coupon" style="color:var(--green-success)">—</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="summary-shipping">FREE ✓</span>
+                </div>
+
+                <div style="margin-top:24px; padding:20px; background:var(--bg-surface); border-radius:12px;">
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px;">
+                        <input type="checkbox" id="express-toggle">
+                        Add Express Delivery (+ Rs. 149)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; margin-top:10px;">
+                        <input type="checkbox" id="gift-toggle">
+                        Free Gift Packaging 🎁
+                    </label>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total Amount</span>
+                    <span id="summary-total">Rs. 0</span>
+                </div>
+                <div style="text-align:right; font-size:12px; color:var(--green-success); font-weight:700; margin-top:5px;">
+                    You Save <span id="summary-saving">Rs. 0</span> on this order
+                </div>
+
+                <a href="checkout.html" class="btn-checkout">Proceed to Checkout →</a>
+
+                <div style="margin-top:30px; display:flex; justify-content:center; gap:20px; opacity:0.6;">
+                    <img src="https://img.icons8.com/color/48/visa.png" width="32">
+                    <img src="https://img.icons8.com/color/48/mastercard.png" width="32">
+                    <img src="https://img.icons8.com/color/48/upi.png" width="32">
+                </div>
+            </aside>
+        </div>
+
+        <!-- Empty State -->
+        <div id="cart-empty" style="display:none; text-align:center; padding:100px 20px;">
+            <div style="font-size:80px; margin-bottom:20px; opacity:0.3;">🛒</div>
+            <h1 style="font-family:'Playfair Display',serif; font-size:36px; margin-bottom:10px;">Your cart is empty</h1>
+            <p style="color:var(--text-muted); margin-bottom:40px;">Looks like you haven't added anything yet.</p>
+            <a href="collection.html" class="btn btn-primary">Shop Now →</a>
+        </div>
+    </main>
+
+    <!-- Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <h2 class="drawer-title">🛒 Your Cart <span class="drawer-count" id="drawer-count">(0 items)</span></h2>
+            <button class="drawer-close" onclick="CartDrawer.close()">✕</button>
+        </div>
+        <div class="shipping-progress">
+            <p class="shipping-msg" id="shipping-msg"></p>
+            <div class="shipping-track"><div class="shipping-fill" id="shipping-fill"></div></div>
+        </div>
+        <div class="drawer-items" id="drawer-items"></div>
+        <div class="drawer-empty" id="drawer-empty" style="display:none">
+            <div class="empty-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <a href="collection.html" class="btn-browse" onclick="CartDrawer.close()">Browse Collection →</a>
+        </div>
+        <div class="drawer-footer" id="drawer-footer">
+            <div class="drawer-subtotal">
+                <div class="subtotal-row"><span>Subtotal</span><span id="drawer-subtotal">Rs. 0</span></div>
+                <div class="subtotal-row saving-row"><span>You Save</span><span id="drawer-saving" class="saving-amount"></span></div>
+            </div>
+            <a href="checkout.html" class="btn-checkout-drawer">Proceed to Checkout →</a>
+            <a href="cart.html" class="btn-view-cart">View Full Cart</a>
+        </div>
+    </aside>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart-drawer.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

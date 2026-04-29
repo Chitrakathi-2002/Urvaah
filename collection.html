@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cart-drawer.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <div class="announcement-bar">
+        <div class="marquee-track">
+          <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦</span>
+        </div>
+      </div>
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <ul class="nav-links">
+          <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+          <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+          <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+          <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+          <li><a href="index.html#occasions">Occasions</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+          <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="wishlist-badge nav-badge">0</span>
+          </a>
+          <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon">🌙</span>
+          </button>
+          <button class="nav-icon-btn" onclick="CartDrawer.open()" title="Cart">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge nav-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+      <ul class="mobile-nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html">Outfit Builder</a></li>
+        <li><a href="wishlist.html">My Wishlist</a></li>
+        <li><a href="cart.html">My Cart</a></li>
+      </ul>
+    </div>
+
+    <main class="container" style="padding: 100px 40px;">
+        <h1 id="collection-title" style="font-family:'Playfair Display',serif; font-size:42px; margin-bottom:60px; text-align:center;">Our Collection</h1>
+        <div id="collection-grid" class="product-grid">
+            <!-- Injected by JS -->
+        </div>
+    </main>
+
+    <!-- Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-hidden="true"></aside>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart-drawer.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('cat');
+        
+        const categoryTitles = {
+            'Sarees': 'Signature Sarees',
+            'Menswear': 'Signature Menswear',
+            'Couples': 'Curated Couple Sets'
+        };
+        if (cat) document.getElementById('collection-title').textContent = categoryTitles[cat] || cat;
+
+        const grid = document.getElementById('collection-grid');
+        const filtered = cat ? PRODUCTS.filter(p => p.category === cat || p.subCategory === cat) : PRODUCTS;
+        
+        filtered.forEach(product => {
+            const card = document.createElement('a');
+            card.href = `product-detail.html?slug=${product.slug}`;
+            card.className = 'product-card';
+            
+            const mainImg = product.images.main || product.images[0];
+            const imgHtml = (mainImg && mainImg.url)
+                ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}" onerror="this.parentElement.classList.add('silk-swatch');this.remove();">`
+                : `<div class="product-image silk-swatch" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#B8922A','#6B1F2A']).join(', ')})"></div>`;
+
+            card.innerHTML = `
+                <div class="product-image-container ${(!mainImg || !mainImg.url) ? 'silk-swatch' : ''}" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#B8922A','#6B1F2A']).join(', ')})">
+                    ${imgHtml}
+                </div>
+                <div class="product-info">
+                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory || product.category}</p>
+                    <h3>${product.shortName || product.name}</h3>
+                    <p class="product-price">Rs. ${product.price.toLocaleString('en-IN')}</p>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

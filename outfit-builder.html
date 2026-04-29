@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Outfit Builder | House of Urvaah</title>
+    
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cart-drawer.css">
+    <link rel="stylesheet" href="css/components.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,400&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ── Root Variables ── */
+        :root {
+            --gold: #B8922A;
+            --gold-light: #D4AA50;
+            --gold-glow: rgba(184,146,42,.18);
+            --maroon: #6B1F2A;
+            --ivory: #FAF6EF;
+            --dark: #1A0F00;
+            --text-muted: rgba(26,15,0,.55);
+            --green: #2D9B6E;
+            --border: rgba(184,146,42,.22);
+            --border-strong: rgba(184,146,42,.6);
+            --shadow: 0 4px 24px rgba(26,15,0,.08);
+            --shadow-hover: 0 12px 40px rgba(26,15,0,.14);
+            --bg-surface: #ffffff;
+        }
+
+        /* ── Reset & Base ── */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'DM Sans', sans-serif; 
+            background: var(--ivory); 
+            color: var(--dark); 
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        button, a { cursor: pointer; transition: all 0.3s ease; }
+        img { max-width: 100%; height: auto; }
+
+        /* ── Animations ── */
+        @keyframes silkShimmer { 
+            0% { background-position: 0% 50% } 
+            50% { background-position: 100% 50% } 
+            100% { background-position: 0% 50% } 
+        }
+        @keyframes cardSlideIn { 
+            from { opacity: 0; transform: translateY(16px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes pinPulse { 
+            0%, 100% { r: 11; opacity: 0.95; } 
+            50% { r: 14; opacity: 0.8; } 
+        }
+        @keyframes ringPulse { 
+            0%, 100% { r: 19; opacity: 0.2; } 
+            50% { r: 26; opacity: 0.07; } 
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOutRight { to { transform: translateX(110%); opacity: 0; } }
+
+        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* ── Layout ── */
+        .outfit-section { padding: 80px 0 120px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+        @media (max-width: 768px) { .container { padding: 0 24px; } .outfit-section { padding: 40px 0; } }
+
+        /* ── Header ── */
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .pre-label { 
+            font-family: 'DM Sans', sans-serif; 
+            font-size: 11px; 
+            letter-spacing: 4px; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            margin-bottom: 12px;
+            display: block;
+        }
+        .section-header h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 52px; 
+            font-weight: 700; 
+            color: var(--dark); 
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+        .section-header p { 
+            font-family: 'DM Sans', sans-serif; 
+            font-size: 15px; 
+            color: rgba(26,15,0,0.55); 
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) { .section-header h1 { font-size: 36px; } }
+
+        /* ── Gender Toggle ── */
+        .gender-toggle { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
+        .gender-btn { 
+            padding: 12px 32px; 
+            border-radius: 100px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            font-family: 'DM Sans', sans-serif;
+            border: 1.5px solid rgba(184,146,42,0.4); 
+            background: transparent; 
+            color: rgba(26,15,0,0.6); 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .gender-btn.active { 
+            background: var(--gold); 
+            color: white; 
+            border-color: var(--gold); 
+            font-weight: 700; 
+            box-shadow: 0 4px 15px rgba(184,146,42,0.3);
+        }
+
+        /* ── Skin Tone Panel ── */
+        .skin-tone-wrapper { text-align: center; margin-bottom: 40px; }
+        .skin-tone-toggle-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 8px 24px; 
+            border-radius: 100px; 
+            border: 1.5px solid var(--border-strong); 
+            background: transparent; 
+            color: var(--gold); 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .skin-tone-panel { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            background: white; 
+            border-radius: 20px; 
+            margin: 16px auto;
+            max-width: 600px;
+        }
+        .skin-tone-panel.open { 
+            max-height: 300px; 
+            padding: 24px; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow);
+        }
+        .skin-tone-panel h4 { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 4px; }
+        .skin-tone-panel p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .tone-swatches { display: flex; gap: 16px; justify-content: center; margin-bottom: 24px; }
+        .tone-swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+        .swatch-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid white; transition: all 0.3s; }
+        .tone-swatch.active .swatch-circle { box-shadow: 0 0 0 3px var(--gold); transform: scale(1.1); }
+        .swatch-label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+
+        .tone-recs { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
+        .tone-rec-title { font-size: 12px; color: var(--text-muted); width: 100%; margin-bottom: 8px; }
+        .tone-chip { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            padding: 4px 12px; 
+            background: var(--ivory); 
+            border-radius: 100px; 
+            font-size: 11px; 
+            font-weight: 600; 
+            border: 1px solid var(--border);
+        }
+        .tone-chip-color { width: 14px; height: 14px; border-radius: 50%; }
+
+        /* ── Builder Layout ── */
+        .builder-layout { 
+            display: grid; 
+            grid-template-columns: 320px 1fr; 
+            gap: 48px; 
+            align-items: start; 
+        }
+        @media (max-width: 1024px) { .builder-layout { grid-template-columns: 280px 1fr; gap: 24px; } }
+        @media (max-width: 768px) { .builder-layout { grid-template-columns: 1fr; } }
+
+        /* ── Left Column: Silhouette ── */
+        .silhouette-card { 
+            background: white; 
+            border-radius: 24px; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow); 
+            padding: 20px; 
+            min-height: 540px;
+            position: sticky;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .silhouette-svg { width: 100%; height: auto; max-width: 260px; }
+        .zone-hit { cursor: pointer; transition: all 0.4s ease; }
+        .zone-hit:hover { fill-opacity: 0.15; stroke-width: 2; }
+        .zone-hit.active { 
+            stroke: var(--gold) !important; 
+            stroke-width: 3 !important; 
+            filter: drop-shadow(0 0 8px rgba(184,146,42,0.6));
+        }
+
+        /* Hotspot Pins */
+        .hotspot { cursor: pointer; }
+        .pin-inner { transition: fill 0.3s; animation: pinPulse 2s ease-in-out infinite; }
+        .pin-ring { animation: ringPulse 2s ease-in-out infinite; transform-origin: center; }
+        .hotspot.active .pin-inner { fill: var(--maroon); }
+        .hotspot.active .pin-ring { opacity: 0.35; r: 22; }
+        
+        /* Visual Preview Overlay */
+        .visual-preview {
+            position: absolute;
+            inset: 20px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        .mannequin-base {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.25;
+            filter: contrast(1.1) grayscale(1);
+        }
+        .preview-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            mix-blend-mode: multiply;
+        }
+        .preview-layer.visible { opacity: 1; transform: scale(1); }
+
+        /* Specific layer adjustments - Perfectly aligned for the ghost mannequin */
+        #layer-headwear { z-index: 15; transform: translateY(-195px) scale(0.35); }
+        #layer-jewellery { z-index: 12; transform: translateY(-135px) scale(0.42); }
+        #layer-blouse { z-index: 8; transform: translateY(-85px) scale(0.68); }
+        #layer-jacket { z-index: 11; transform: translateY(-45px) scale(0.72); }
+        #layer-dupatta { z-index: 10; transform: scale(1.1); }
+        #layer-saree { z-index: 7; transform: translateY(20px) scale(1); }
+        #layer-kurta { z-index: 7; transform: translateY(-30px) scale(0.95); }
+        #layer-bottom { z-index: 6; transform: translateY(140px) scale(0.85); }
+        #layer-footwear { z-index: 5; transform: translateY(220px) scale(0.4); }
+
+        /* ── Right Column: Parts Panel ── */
+        .parts-panel { display: flex; flex-direction: column; height: 100%; }
+        
+        .zone-header { 
+            background: white; 
+            border: 1.5px solid var(--gold); 
+            border-radius: 14px; 
+            padding: 16px 20px; 
+            margin-bottom: 16px; 
+            box-shadow: 0 0 0 4px var(--gold-glow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            animation: fadeIn 0.4s ease;
+        }
+        .zone-header-icon { font-size: 28px; }
+        .zone-header h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--dark); }
+        .zone-header p { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+        .parts-list { 
+            max-height: 480px; 
+            overflow-y: auto; 
+            padding-right: 8px;
+        }
+        .parts-list::-webkit-scrollbar { width: 4px; }
+        .parts-list::-webkit-scrollbar-track { background: transparent; }
+        .parts-list::-webkit-scrollbar-thumb { background: rgba(184,146,42,0.3); border-radius: 10px; }
+
+        /* Part Card */
+        .part-card { 
+            background: white; 
+            border: 1.5px solid rgba(184,146,42,0.18); 
+            border-radius: 14px; 
+            padding: 16px; 
+            margin-bottom: 12px; 
+            display: flex; 
+            gap: 16px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            animation: cardSlideIn 0.4s ease forwards;
+        }
+        .part-card:hover { 
+            border-color: var(--border-strong); 
+            transform: translateX(5px); 
+            box-shadow: var(--shadow-hover); 
+        }
+        .part-card.selected { 
+            border-color: var(--gold); 
+            background: rgba(184,146,42,0.05); 
+            box-shadow: 0 0 0 3px rgba(184,146,42,0.15); 
+        }
+        .selected-badge { 
+            position: absolute; top: 12px; right: 16px; 
+            font-size: 10px; font-weight: 800; color: var(--gold); 
+            letter-spacing: 1px; 
+        }
+
+        .part-img { 
+            width: 90px; height: 110px; border-radius: 12px; 
+            flex-shrink: 0; background: #fdfdfd; border: 1px solid #f0f0f0;
+            overflow: hidden; position: relative;
+        }
+        .part-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .part-card:hover .part-img img { transform: scale(1.1); }
+
+        .part-info { flex: 1; min-width: 0; }
+        .part-name { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; line-height: 1.4; }
+        .part-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        
+        .match-badge { 
+            display: inline-block; 
+            padding: 2px 10px; 
+            border-radius: 100px; 
+            font-size: 10px; 
+            font-weight: 700; 
+            margin-bottom: 6px; 
+        }
+        .match-reason { font-size: 11px; font-style: italic; color: rgba(26,15,0,0.45); margin-bottom: 8px; }
+        .currently-viewing { font-size: 11px; font-weight: 600; color: var(--gold); margin-bottom: 8px; }
+
+        .price-row { display: flex; align-items: center; gap: 8px; }
+        .sale-price { font-size: 17px; font-weight: 700; color: var(--gold); }
+        .mrp { font-size: 12px; color: rgba(26,15,0,0.35); text-decoration: line-through; }
+        .disc-pill { 
+            font-size: 10px; background: var(--maroon); color: #F0D080; 
+            padding: 2px 8px; border-radius: 100px; font-weight: 700; 
+        }
+
+        .part-actions { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+        .btn-select { 
+            width: 100px; padding: 8px 0; border-radius: 100px; 
+            font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
+            border: 1.5px solid var(--gold); background: transparent; color: var(--gold);
+        }
+        .part-card.selected .btn-select { background: var(--gold); color: white; }
+        .btn-quick-add { background: none; border: none; font-size: 11px; color: var(--text-muted); text-decoration: underline; }
+
+        /* ── Outfit Tray (Bottom) ── */
+        .outfit-tray { 
+            background: white; 
+            border: 1.5px solid rgba(184,146,42,0.25); 
+            border-radius: 20px; 
+            padding: 24px 32px; 
+            margin-top: 60px;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.05);
+        }
+        .tray-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .tray-header h2 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+        .btn-clear { background: none; border: none; font-size: 12px; color: var(--text-muted); text-decoration: underline; }
+
+        .tray-slots { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 24px; }
+        .tray-slots::-webkit-scrollbar { height: 4px; }
+        .tray-slots::-webkit-scrollbar-thumb { background: rgba(184,146,42,0.2); border-radius: 10px; }
+
+        .tray-slot { width: 88px; flex-shrink: 0; text-align: center; }
+        .slot-box { 
+            width: 72px; height: 84px; margin: 0 auto 8px; 
+            border: 1.5px dashed rgba(184,146,42,0.3); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; transition: all 0.3s;
+        }
+        .tray-slot.filled .slot-box { border: 1.5px solid var(--gold); background-size: 400% 400%; animation: silkShimmer 5s ease infinite; }
+        .slot-icon { font-size: 28px; opacity: 0.3; transition: all 0.3s; }
+        .tray-slot.filled .slot-icon { opacity: 1; transform: scale(1.1); }
+        .slot-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tray-slot.filled .slot-label { color: var(--gold); }
+        .slot-price { font-size: 11px; font-weight: 700; color: var(--gold); margin-top: 2px; }
+
+        .slot-check { 
+            position: absolute; top: -6px; right: -6px; 
+            width: 20px; height: 20px; background: var(--green); 
+            border-radius: 50%; color: white; display: none; 
+            align-items: center; justify-content: center; font-size: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .tray-slot.filled .slot-check { display: flex; }
+        .slot-remove { 
+            position: absolute; top: -6px; left: -6px; 
+            width: 20px; height: 20px; background: var(--maroon); 
+            border-radius: 50%; color: white; display: none; 
+            align-items: center; justify-content: center; font-size: 10px; border: none;
+        }
+        .tray-slot.filled:hover .slot-remove { display: flex; }
+
+        .tray-footer { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding-top: 24px; border-top: 1px solid var(--ivory);
+            flex-wrap: wrap; gap: 24px;
+        }
+        .tray-total-info { display: flex; flex-direction: column; }
+        .tray-total-label { font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+        .tray-total-price { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--gold); line-height: 1; }
+        .tray-savings { font-size: 13px; color: var(--green); font-weight: 600; margin-top: 6px; }
+
+        .tray-actions { display: flex; gap: 12px; }
+        .btn-add-all { 
+            height: 56px; padding: 0 32px; border-radius: 100px; 
+            background: var(--gold); color: white; border: none; 
+            font-size: 15px; font-weight: 800; font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 4px 15px rgba(184,146,42,0.3);
+        }
+        .btn-add-all:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(184,146,42,0.4); }
+        .btn-share { 
+            height: 56px; padding: 0 24px; border-radius: 100px; 
+            background: transparent; border: 1.5px solid rgba(184,146,42,0.4); 
+            color: rgba(26,15,0,0.7); font-size: 14px; font-weight: 600;
+        }
+        .btn-share:hover { border-color: var(--gold); color: var(--gold); }
+        
+        .save-link { display: block; width: 100%; text-align: center; margin-top: 16px; font-size: 12px; color: var(--text-muted); text-decoration: underline; }
+
+        /* ── Floating Tooltip ── */
+        .zone-tooltip { 
+            position: fixed; background: rgba(26,15,0,0.9); color: white; 
+            padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 600;
+            pointer-events: none; opacity: 0; transform: translateY(-10px); transition: all 0.2s;
+            z-index: 1000; white-space: nowrap;
+        }
+        .zone-tooltip.visible { opacity: 1; transform: translateY(0); }
+
+        /* ── Color Tip ── */
+        .color-tip-toast { 
+            display: flex; align-items: center; gap: 12px; 
+            background: rgba(184,146,42,0.08); border: 1px solid rgba(184,146,42,0.25);
+            padding: 12px 20px; border-radius: 12px; margin-top: 16px;
+            animation: fadeIn 0.5s ease;
+        }
+        .color-tip-text { font-size: 12px; color: var(--dark); flex: 1; }
+        .color-tip-close { background: none; border: none; font-size: 18px; color: var(--text-muted); }
+
+        /* ── Mobile Overrides ── */
+        @media (max-width: 768px) {
+            .tray-footer { flex-direction: column; align-items: stretch; }
+            .tray-actions { flex-direction: column; }
+            .btn-add-all, .btn-share { width: 100%; }
+            .silhouette-card { position: relative; top: 0; margin-bottom: 24px; min-height: 480px; }
+            .parts-list { max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <div class="announcement-bar">
+        <div class="marquee-track">
+          <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦</span>
+        </div>
+      </div>
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <ul class="nav-links">
+          <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+          <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+          <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+          <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+          <li><a href="index.html#occasions">Occasions</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+          <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="wishlist-badge nav-badge">0</span>
+          </a>
+          <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon">🌙</span>
+          </button>
+          <button class="nav-icon-btn" onclick="CartDrawer.open()" title="Cart">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge nav-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+      <ul class="mobile-nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html">Outfit Builder</a></li>
+        <li><a href="wishlist.html">My Wishlist</a></li>
+        <li><a href="cart.html">My Cart</a></li>
+      </ul>
+    </div>
+
+    <main class="outfit-section">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <header class="section-header fade-up">
+                <span class="pre-label">✦ BUILD YOUR COMPLETE LOOK ✦</span>
+                <h1>Style It Your Way</h1>
+                <p>Click any part of the outfit to discover perfectly matched pieces. Mix, match, and build your dream look.</p>
+            </header>
+
+            <!-- Skin Tone Toggle & Panel -->
+            <div class="skin-tone-wrapper fade-up">
+                <button class="skin-tone-toggle-btn" id="skin-tone-toggle">
+                    ✦ Skin Tone Match
+                </button>
+                <div class="skin-tone-panel" id="skin-tone-panel">
+                    <h4>Select Your Skin Tone</h4>
+                    <p>We'll suggest the most flattering colours for you</p>
+                    <div class="tone-swatches">
+                        <div class="tone-swatch" data-tone="fair">
+                            <div class="swatch-circle" style="background:#FDDBB4"></div>
+                            <span class="swatch-label">Fair</span>
+                        </div>
+                        <div class="tone-swatch" data-tone="light">
+                            <div class="swatch-circle" style="background:#F5C89A"></div>
+                            <span class="swatch-label">Light</span>
+                        </div>
+                        <div class="tone-swatch" data-tone="medium">
+                            <div class="swatch-circle" style="background:#D4956A"></div>
+                            <span class="swatch-label">Medium</span>
+                        </div>
+                        <div class="tone-swatch" data-tone="wheatish">
+                            <div class="swatch-circle" style="background:#C07B4E"></div>
+                            <span class="swatch-label">Wheatish</span>
+                        </div>
+                        <div class="tone-swatch" data-tone="brown">
+                            <div class="swatch-circle" style="background:#8D5524"></div>
+                            <span class="swatch-label">Brown</span>
+                        </div>
+                        <div class="tone-swatch" data-tone="deep">
+                            <div class="swatch-circle" style="background:#4A2510"></div>
+                            <span class="swatch-label">Deep</span>
+                        </div>
+                    </div>
+                    <div class="tone-recs" id="tone-recs-row" style="display:none">
+                        <span class="tone-rec-title" id="tone-rec-title">Recommended colours for you:</span>
+                        <!-- Recommendation chips will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gender Toggle -->
+            <div class="gender-toggle fade-up">
+                <button class="gender-btn active" data-gender="women">
+                    <span>👗</span> Women's
+                </button>
+                <button class="gender-btn" data-gender="men">
+                    <span>👔</span> Men's
+                </button>
+            </div>
+
+            <!-- Builder Layout -->
+            <div class="builder-layout fade-up">
+                
+                <!-- Left Column: Silhouette -->
+                <div class="silhouette-column">
+                    <div class="silhouette-card">
+                        <!-- Visual Preview Images -->
+                        <div class="visual-preview" id="visual-preview">
+                            <img src="images/builder/realistic_ghost_mannequin_base_1777434508977.png" class="mannequin-base" alt="">
+                            <img id="layer-headwear" class="preview-layer" src="" alt="">
+                            <img id="layer-jewellery" class="preview-layer" src="" alt="">
+                            <img id="layer-blouse" class="preview-layer" src="" alt="">
+                            <img id="layer-jacket" class="preview-layer" src="" alt="">
+                            <img id="layer-dupatta" class="preview-layer" src="" alt="">
+                            <img id="layer-saree" class="preview-layer" src="" alt="">
+                            <img id="layer-kurta" class="preview-layer" src="" alt="">
+                            <img id="layer-bottom" class="preview-layer" src="" alt="">
+                            <img id="layer-footwear" class="preview-layer" src="" alt="">
+                        </div>
+                        
+                        <!-- Women Silhouette SVG -->
+                        <svg id="svg-women" class="silhouette-svg" viewBox="0 0 260 500">
+                            <!-- Paths for body zones -->
+                            <ellipse id="w-head" cx="130" cy="52" rx="34" ry="40" fill="rgba(220,200,180,0.9)" stroke="rgba(184,146,42,0.35)" stroke-width="1.5" class="zone-hit" data-zone="jewellery"/>
+                            <rect id="w-neck" x="118" y="90" width="24" height="22" rx="6" fill="rgba(220,200,180,0.9)" stroke="rgba(184,146,42,0.2)" stroke-width="1" class="zone-hit" data-zone="jewellery"/>
+                            <path id="w-torso" d="M88,112 Q70,120 66,158 L66,215 Q130,228 194,215 L194,158 Q190,120 172,112 Z" fill="rgba(210,190,170,0.85)" stroke="rgba(184,146,42,0.3)" stroke-width="1.5" class="zone-hit" data-zone="blouse"/>
+                            <path id="w-dupatta" d="M66,148 Q44,165 38,238 Q54,246 68,235 Q80,200 92,170 Z" fill="rgba(200,180,160,0.75)" stroke="rgba(184,146,42,0.2)" stroke-width="1" class="zone-hit" data-zone="dupatta"/>
+                            <path id="w-saree" d="M66,215 Q60,258 62,340 Q82,378 130,382 Q178,378 198,340 Q200,258 194,215 Z" fill="rgba(215,195,175,0.9)" stroke="rgba(184,146,42,0.3)" stroke-width="1.5" class="zone-hit" data-zone="saree"/>
+                            <path id="w-feet" d="M90,382 Q87,432 84,490 Q107,498 130,496 Q153,498 176,490 Q173,432 170,382 Z" fill="rgba(215,195,175,0.85)" stroke="rgba(184,146,42,0.2)" stroke-width="1" class="zone-hit" data-zone="footwear"/>
+
+                            <!-- Hotspot Pins -->
+                            <g class="hotspot" data-zone="jewellery" transform="translate(170,82)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">💍</text>
+                            </g>
+                            <g class="hotspot" data-zone="blouse" transform="translate(202,162)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👚</text>
+                            </g>
+                            <g class="hotspot" data-zone="saree" transform="translate(202,278)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👗</text>
+                            </g>
+                            <g class="hotspot" data-zone="dupatta" transform="translate(42,178)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">🧣</text>
+                            </g>
+                            <g class="hotspot" data-zone="footwear" transform="translate(202,440)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👠</text>
+                            </g>
+                        </svg>
+
+                        <!-- Men Silhouette SVG (Hidden by default) -->
+                        <svg id="svg-men" class="silhouette-svg" viewBox="0 0 260 500" style="display:none">
+                            <ellipse id="m-head" cx="130" cy="52" rx="36" ry="44" fill="rgba(220,200,180,0.9)" stroke="rgba(184,146,42,0.35)" stroke-width="1.5" class="zone-hit" data-zone="headwear"/>
+                            <path id="m-torso" d="M70,110 Q50,120 45,180 L45,300 Q130,315 215,300 L215,180 Q210,120 190,110 Z" fill="rgba(210,190,170,0.85)" stroke="rgba(184,146,42,0.3)" stroke-width="1.5" class="zone-hit" data-zone="kurta"/>
+                            <path id="m-jacket" d="M70,110 Q60,115 55,160 L55,300 L110,300 L110,110 Z" fill="rgba(200,180,160,0.7)" stroke="rgba(184,146,42,0.2)" stroke-width="1" class="zone-hit" data-zone="jacket"/>
+                            <path id="m-bottom" d="M75,300 Q70,350 65,460 Q100,465 130,464 Q160,465 195,460 Q190,350 185,300 Z" fill="rgba(215,195,175,0.9)" stroke="rgba(184,146,42,0.3)" stroke-width="1.5" class="zone-hit" data-zone="bottom"/>
+                            <path id="m-feet" d="M85,460 Q82,475 80,496 Q105,502 130,500 Q155,502 180,496 Q178,475 175,460 Z" fill="rgba(215,195,175,0.85)" stroke="rgba(184,146,42,0.2)" stroke-width="1" class="zone-hit" data-zone="footwear"/>
+
+                            <g class="hotspot" data-zone="headwear" transform="translate(185,60)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👑</text>
+                            </g>
+                            <g class="hotspot" data-zone="kurta" transform="translate(202,210)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👔</text>
+                            </g>
+                            <g class="hotspot" data-zone="jacket" transform="translate(62,200)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">🥼</text>
+                            </g>
+                            <g class="hotspot" data-zone="bottom" transform="translate(202,380)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👖</text>
+                            </g>
+                            <g class="hotspot" data-zone="footwear" transform="translate(202,465)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                                <text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👞</text>
+                            </g>
+                            <g class="hotspot" data-zone="watch" transform="translate(225,290)">
+                                <circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/>
+                                <circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/>
+                            <g class="hotspot" data-zone="headwear" transform="translate(185,60)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👑</text></g>
+                            <g class="hotspot" data-zone="kurta" transform="translate(202,210)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👔</text></g>
+                            <g class="hotspot" data-zone="jacket" transform="translate(62,200)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">🥼</text></g>
+                            <g class="hotspot" data-zone="bottom" transform="translate(202,380)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👖</text></g>
+                            <g class="hotspot" data-zone="footwear" transform="translate(202,465)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">👞</text></g>
+                            <g class="hotspot" data-zone="watch" transform="translate(225,290)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">⌚</text></g>
+                            <g class="hotspot" data-zone="goggles" transform="translate(130,68)"><circle r="19" fill="#B8922A" opacity="0.2" class="pin-ring"/><circle r="11" fill="#B8922A" opacity="0.95" class="pin-inner"/><text text-anchor="middle" dominant-baseline="central" font-size="11" fill="white">🕶</text></g>
+                        </svg>
+
+                        <div class="preview-chips">
+                            <div class="preview-title">Last Selected:</div>
+                            <div class="preview-row" id="preview-row"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="parts-panel">
+                    <div class="zone-header" id="zone-header">
+                        <div class="zone-header-icon" id="header-icon">👗</div>
+                        <div class="zone-header-info">
+                            <h3 id="header-title">Saree / Drape</h3>
+                            <p id="header-tip">This is your selected saree</p>
+                        </div>
+                    </div>
+                    <div class="parts-list" id="parts-list"></div>
+                    <div class="color-tip-toast" id="color-tip-toast" style="display:none">
+                        <div class="color-tip-text" id="color-tip-text">Pair with gold, ivory, or deep green accessories.</div>
+                        <button class="color-tip-close" id="color-tip-close">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outfit-tray fade-up">
+                <div class="tray-header">
+                    <h2>✦ Your Complete Outfit</h2>
+                    <button class="btn-clear" id="clear-tray">Clear All</button>
+                </div>
+                <div class="tray-slots" id="tray-slots"></div>
+                <div class="tray-footer">
+                    <div class="tray-total-info">
+                        <span class="tray-total-label">Outfit Total:</span>
+                        <span class="tray-total-price" id="tray-total">Rs. 0</span>
+                        <span class="tray-savings" id="tray-savings">Total Saving: Rs. 0</span>
+                    </div>
+                    <div class="tray-actions">
+                        <button class="btn-add-all" id="btn-add-all">🛒 Add Complete Outfit to Cart</button>
+                        <button class="btn-share" id="btn-share">↗ Share This Look</button>
+                    </div>
+                </div>
+                <button class="save-link" id="save-look">💾 Save Outfit</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="zone-tooltip" id="zone-tooltip">Click to see matching jewellery</div>
+
+    <script>
+        const ZONE_DATA_WOMEN = {
+            saree: {
+                label: 'Main Saree / Drape', icon: '👗',
+                tip: 'This is your selected saree', isMainProduct: true,
+                parts: [
+                    { id:'s1', name:'Venetian Maroon Golden Zari Kanjivaram Silk Saree', subtitle:'Currently Viewing', price:3599, mrp:8999, matchScore:100, matchReason:'Currently viewing', gradient:['#6B1F2A','#C9A84C','#8B1A2A'], isSelected:true, image: 'images/builder/womens_maroon_saree_full_1777433910215.png' },
+                ]
+            },
+            jewellery: {
+                label: 'Necklace Set', icon: '💍',
+                tip: 'Click to see matching jewellery',
+                parts: [
+                    { id:'j1', name:'Antique Gold Temple Necklace Set', subtitle:'22K Gold finish, rubies & emeralds', price:4999, mrp:12499, matchScore:98, matchReason:'Traditional temple design pairs perfectly', gradient:['#C9A84C','#F0D080','#8B6914'], image: 'images/builder/womens_gold_jewellery_set_1777433955507.png' },
+                    { id:'j2', name:'Ruby Pearl Choker', subtitle:'Freshwater pearls, kundan work', price:3499, mrp:6999, matchScore:92, matchReason:'Red rubies match the saree border', gradient:['#8B1A2A','#F5EDD6','#C9A84C'], image: 'images/builder/womens_ruby_choker_crop_1777434621705.png' },
+                    { id:'j3', name:'Minimal Gold Chain', subtitle:'Daily wear, lightweight', price:1499, mrp:2999, matchScore:75, matchReason:'A subtle choice for a heavy saree', gradient:['#F0D080','#C9A84C','#D4AA50'], image: 'images/builder/womens_minimal_gold_chain_crop_1777435121418.png' },
+                ]
+            },
+            blouse: {
+                label: 'Designer Blouse', icon: '👚',
+                tip: 'Click to see matching blouses',
+                parts: [
+                    { id:'b1', name:'Gold Brocade Silk Blouse', subtitle:'Short sleeves, padded, back open', price:1899, mrp:3799, matchScore:96, matchReason:'Matches the saree zari work', gradient:['#C9A84C','#F0D080','#8B6914'], image: 'images/builder/gold_brocade_blouse_1777403505795.png' },
+                    { id:'b2', name:'Emerald Green Embroidered Blouse', subtitle:'Contrast look, heavy embroidery', price:2499, mrp:4999, matchScore:94, matchReason:'Emerald green provides a royal contrast', gradient:['#1D6B4F','#114B36','#C9A84C'], image: 'images/builder/womens_green_blouse_crop_1777433992336.png' },
+                    { id:'b3', name:'Maroon Matching Blouse', subtitle:'Same fabric as saree', price:1299, mrp:2599, matchScore:99, matchReason:'Traditional monochrome styling', gradient:['#6B1F2A','#8B1A2A','#C9A84C'], image: 'images/builder/maroon_blouse_layer_1777402489425.png' },
+                ]
+            },
+            dupatta: {
+                label: 'Matching Dupatta', icon: '🧣',
+                tip: 'Click to see matching dupatta',
+                parts: [
+                    { id:'d1', name:'Organza Silk Dupatta', subtitle:'Gold butti work, scalloped edge', price:1499, mrp:2999, matchScore:88, matchReason:'Lightweight organza balances heavy silk', gradient:['#FAF6EF','#C9A84C','#F0D080'], image: 'images/builder/womens_organza_dupatta_full_1777434375787.png' },
+                    { id:'d2', name:'Banarasi Red Dupatta', subtitle:'Heavy zari work, traditional', price:2299, mrp:4599, matchScore:91, matchReason:'Doubles the elegance of the look', gradient:['#8B1A2A','#6B1F2A','#C9A84C'], image: 'images/builder/womens_red_banarasi_dupatta_full_1777434652049.png' },
+                ]
+            },
+            footwear: {
+                label: 'Footwear', icon: '👠',
+                tip: 'Click to see matching footwear',
+                parts: [
+                    { id:'f1', name:'Gold Embroidered Block Heels', subtitle:'2.5" block heel, embroidered strap', price:2999, mrp:5999, matchScore:93, matchReason:'Gold heels complement zari border', gradient:['#C9A84C','#8B6914','#F0D080'], image: 'images/builder/womens_gold_heels_crop_1777434118049.png' },
+                    { id:'f2', name:'Maroon Velvet Jutti', subtitle:'Hand-embroidered, flat, traditional', price:1799, mrp:3599, matchScore:88, matchReason:'Matches saree colour perfectly', gradient:['#6B1F2A','#C9A84C','#8B1A2A'], image: 'images/builder/womens_maroon_jutti_crop_1777434400572.png' },
+                    { id:'f3', name:'Ivory Embellished Flats', subtitle:'Crystal stones, pointed toe', price:2499, mrp:4999, matchScore:82, matchReason:'Neutral ivory ties the look together', gradient:['#F5EDD6','#D4B896','#C9A84C'] },
+                ]
+            }
+        };
+
+        const ZONE_DATA_MEN = {
+            kurta: {
+                label: 'Kurta / Shirt', icon: '👔',
+                tip: 'This is your selected kurta', isMainProduct: true,
+                parts: [
+                    { id:'mk1', name:'Emerald Green Textured Silk Kurta', subtitle:'Slim fit, self-design, festive', price:2249, mrp:4499, matchScore:100, matchReason:'Currently viewing', gradient:['#1a5c40','#2d9b6e','#a0d4bc'], isSelected:true, image: 'images/builder/mens_emerald_kurta_full_1777434033885.png' },
+                ]
+            },
+            bottom: {
+                label: 'Churidar / Pant', icon: '👖',
+                tip: 'Click to see matching bottoms',
+                parts: [
+                    { id:'mp1', name:'Ivory Cotton Churidar', subtitle:'Slim fit, ankle length', price:1499, mrp:2999, matchScore:97, matchReason:'Classic ivory contrast with mint', gradient:['#F5EDD6','#E8DDD0','#D4C8B8'], image: 'images/builder/mens_ivory_churidar_full_1777434424885.png' },
+                    { id:'mp2', name:'Mint Matching Churidar', subtitle:'Same fabric as kurta', price:1299, mrp:2599, matchScore:95, matchReason:'Full monochrome — ultra elegant', gradient:['#1a5c40','#2d9b6e','#a0d4bc'] },
+                ]
+            },
+            jacket: {
+                label: 'Jacket / Nehru', icon: '🥼',
+                tip: 'Click to see matching jackets',
+                parts: [
+                    { id:'mj1', name:'Ivory Nehru Jacket', subtitle:'Brocade front, mandarin collar', price:3499, mrp:6999, matchScore:96, matchReason:'Ivory over mint = wedding-perfect', gradient:['#F5EDD6','#C9A84C','#E8DDD0'], image: 'images/builder/mens_ivory_jacket_crop_1777434058909.png' },
+                    { id:'mj2', name:'Dark Green Velvet Jacket', subtitle:'Velvet, gold buttons, slim fit', price:4299, mrp:8599, matchScore:88, matchReason:'Tone-on-tone — ultra formal', gradient:['#0a3d22','#1D6B4F','#2D9B6E'], image: 'images/builder/mens_dark_green_velvet_jacket_crop_1777434676573.png' },
+                ]
+            },
+            footwear: {
+                label: 'Footwear', icon: '👞',
+                tip: 'Click to see matching footwear',
+                parts: [
+                    { id:'mf1', name:'Ivory Kolhapuri Chappal', subtitle:'Handcrafted leather, traditional', price:2499, mrp:4999, matchScore:92, matchReason:'Classic ivory completes ethnic look', gradient:['#F5EDD6','#D4B896','#C9A84C'], image: 'images/builder/mens_kolhapuri_chappal_crop_1777434485200.png' },
+                    { id:'mf2', name:'Tan Leather Mojaris', subtitle:'Traditional handcrafted, gold stitch', price:1999, mrp:3999, matchScore:89, matchReason:'Gold stitching ties outfit together', gradient:['#8B6914','#C9A84C','#F0D080'], image: 'images/builder/mens_tan_mojaris_crop_1777434099134.png' },
+                ]
+            },
+            headwear: { label: 'Safa / Turban', icon: '👑', tip: 'Click to see matching Safas', parts: [ { id:'ms1', name:'Ivory Gold Safa', subtitle:'Raw silk, pre-tied', price:1499, mrp:2999, matchScore:96, matchReason:'Perfect for grooms', gradient:['#F5EDD6','#C9A84C'], image: 'images/builder/mens_ivory_safa_crop_1777434449601.png' } ] },
+            watch: { label: 'Watch', icon: '⌚', tip: 'Click to see matching watches', parts: [ { id:'mw1', name:'Gold Plated Classic', subtitle:'Analog, leather strap', price:3999, mrp:7999, matchScore:95, matchReason:'Gold tone ties accessories', gradient:['#C9A84C','#F0D080'] } ] },
+            goggles: { label: 'Sunglasses', icon: '🕶', tip: 'Click to see matching sunglasses', parts: [ { id:'mg1', name:'Gold Aviators', subtitle:'Polarized lenses', price:1999, mrp:3999, matchScore:94, matchReason:'Classic ethnic look', gradient:['#C9A84C','#8B6914'] } ] }
+        };
+
+        const SKIN_TONE_RECS = {
+            fair:     [{hex:'#6B1F2A', name:'Maroon'},{hex:'#1D6B4F', name:'Emerald'},{hex:'#7B5CF0', name:'Violet'},{hex:'#2D9B6E', name:'Teal'}],
+            light:    [{hex:'#C9A84C', name:'Gold'},{hex:'#6B1F2A', name:'Maroon'},{hex:'#E8B4B8', name:'Blush'},{hex:'#0d2b5e', name:'Navy'}],
+            medium:   [{hex:'#F5C518', name:'Yellow'},{hex:'#C9A84C', name:'Gold'},{hex:'#1D6B4F', name:'Green'},{hex:'#8B0000', name:'Deep Red'}],
+            wheatish: [{hex:'#C9A84C', name:'Gold'},{hex:'#F5C518', name:'Mustard'},{hex:'#E8735A', name:'Rust'},{hex:'#2D9B6E', name:'Green'}],
+            brown:    [{hex:'#F0D080', name:'Light Gold'},{hex:'#E8B4B8', name:'Pink'},{hex:'#C4B5FD', name:'Lavender'},{hex:'#7ECBA1', name:'Mint'}],
+            deep:     [{hex:'#F0D080', name:'Gold'},{hex:'#E8B4B8', name:'Pink'},{hex:'#F5C518', name:'Yellow'},{hex:'#FFFFFF', name:'White'}],
+        };
+
+        /* ── State ── */
+        let state = {
+            gender: 'women',
+            activeZone: 'saree',
+            selectedParts: {},
+            skinTone: null,
+            lastSelected: [] // For preview chips
+        };
+
+        /* ── Controller ── */
+        function initBuilder() {
+            // Set defaults
+            state.selectedParts['saree'] = ZONE_DATA_WOMEN.saree.parts[0];
+            
+            // Wire events
+            wireGenderToggle();
+            wireSkinTone();
+            wireZones();
+            wireTrayActions();
+            wireColorTipClose();
+            
+            // Entrance animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // Initial render
+            selectZone('saree');
+            // Re-apply initial images if any
+            Object.keys(state.selectedParts).forEach(z => {
+                const p = state.selectedParts[z];
+                updateVisualPreview(z, p.image);
+            });
+            renderTray();
+        }
+
+        function wireGenderToggle() {
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.classList.contains('active')) return;
+                    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    switchGender(btn.dataset.gender);
+                };
+            });
+        }
+
+        function wireSkinTone() {
+            const toggle = document.getElementById('skin-tone-toggle');
+            const panel = document.getElementById('skin-tone-panel');
+            toggle.onclick = () => panel.classList.toggle('open');
+
+            document.querySelectorAll('.tone-swatch').forEach(swatch => {
+                swatch.onclick = () => {
+                    document.querySelectorAll('.tone-swatch').forEach(s => s.classList.remove('active'));
+                    swatch.classList.add('active');
+                    state.skinTone = swatch.dataset.tone;
+                    renderSkinToneRecs(state.skinTone);
+                    renderPartsList(state.activeZone);
+                };
+            });
+        }
+
+        function wireZones() {
+            const hits = document.querySelectorAll('.zone-hit');
+            const hotspots = document.querySelectorAll('.hotspot');
+            const tooltip = document.getElementById('zone-tooltip');
+
+            const handleEnter = (e) => {
+                const zone = e.currentTarget.dataset.zone;
+                const label = getCurrentZoneData()[zone]?.label || zone;
+                tooltip.textContent = `Click to see matching ${label}`;
+                tooltip.classList.add('visible');
+            };
+            const handleLeave = () => tooltip.classList.remove('visible');
+            const handleMove = (e) => {
+                tooltip.style.left = e.clientX + 15 + 'px';
+                tooltip.style.top = e.clientY + 15 + 'px';
+            };
+            const handleClick = (e) => selectZone(e.currentTarget.dataset.zone);
+
+            [...hits, ...hotspots].forEach(el => {
+                el.onmouseenter = handleEnter;
+                el.onmouseleave = handleLeave;
+                el.onmousemove = handleMove;
+                el.onclick = handleClick;
+            });
+        }
+
+        function wireTrayActions() {
+            document.getElementById('clear-tray').onclick = () => {
+                state.selectedParts = {};
+                // Reset main item
+                if (state.gender === 'women') state.selectedParts['saree'] = ZONE_DATA_WOMEN.saree.parts[0];
+                else state.selectedParts['kurta'] = ZONE_DATA_MEN.kurta.parts[0];
+                
+                resetSilhouetteColors(state.gender);
+                renderTray();
+                renderPartsList(state.activeZone);
+            };
+
+            document.getElementById('btn-add-all').onclick = () => addAllToCart();
+            document.getElementById('btn-share').onclick = () => {
+                if (navigator.share) {
+                    navigator.share({ title: 'My House of Urvaah Look', url: window.location.href });
+                } else {
+                    alert('Sharing link copied to clipboard!');
+                }
+            };
+            document.getElementById('save-look').onclick = () => showToast('Look saved to your collection! ✓', 'success');
+        }
+
+        function wireColorTipClose() {
+            document.getElementById('color-tip-close').onclick = () => {
+                document.getElementById('color-tip-toast').style.display = 'none';
+            };
+        }
+
+        /* ── Core Functions ── */
+        function selectZone(zoneName) {
+            state.activeZone = zoneName;
+            
+            // UI Updates
+            document.querySelectorAll('.zone-hit, .hotspot').forEach(el => {
+                el.classList.toggle('active', el.dataset.zone === zoneName);
+            });
+
+            const zoneInfo = getCurrentZoneData()[zoneName];
+            if (!zoneInfo) return;
+
+            document.getElementById('header-icon').textContent = zoneInfo.icon;
+            document.getElementById('header-title').textContent = zoneInfo.label;
+            document.getElementById('header-tip').textContent = zoneInfo.tip;
+
+            renderPartsList(zoneName);
+        }
+
+        function selectPart(zoneName, partId) {
+            const zoneData = getCurrentZoneData()[zoneName];
+            const part = zoneData.parts.find(p => p.id === partId);
+            if (!part) return;
+
+            state.selectedParts[zoneName] = part;
+            
+            // Add to preview
+            state.lastSelected = [part, ...state.lastSelected.filter(p => p.id !== part.id)].slice(0, 3);
+
+            updateSilhouetteZoneColour(zoneName, part.gradient[0], part.gradient[1]);
+            updateVisualPreview(zoneName, part.image);
+            renderPartsList(zoneName);
+            renderTray();
+            renderPreviewChips();
+            showColourTip(part);
+            
+            // Mismatch check (Skin Tone)
+            if (state.skinTone) {
+                const matchScore = calculateMatchScore(part, state.skinTone);
+                if (matchScore < 70) {
+                    const rec = SKIN_TONE_RECS[state.skinTone][0].name;
+                    showToast(`⚠ This colour may not complement your skin tone. Try ${rec} instead.`, 'warning', 4000);
+                }
+            }
+
+            showToast(`${part.name.substring(0,25)}... selected!`, 'success');
+        }
+
+        function updateVisualPreview(zoneName, imagePath) {
+            const layer = document.getElementById(`layer-${zoneName}`);
+            if (!layer) return;
+            
+            if (imagePath) {
+                layer.src = imagePath;
+                layer.classList.add('visible');
+            } else {
+                layer.classList.remove('visible');
+                // delay src clear to allow fade out
+                setTimeout(() => { if (!layer.classList.contains('visible')) layer.src = ''; }, 500);
+            }
+        }
+
+        function renderPartsList(zoneName) {
+            const container = document.getElementById('parts-list');
+            container.innerHTML = '';
+            const zoneData = getCurrentZoneData()[zoneName];
+            if (!zoneData) return;
+
+            zoneData.parts.forEach((part, i) => {
+                const isSelected = state.selectedParts[zoneName]?.id === part.id;
+                const matchScore = state.skinTone ? calculateMatchScore(part, state.skinTone) : part.matchScore;
+                const isSkinMatch = state.skinTone && isPartSkinMatch(part, state.skinTone);
+                
+                const card = document.createElement('div');
+                card.className = `part-card${isSelected ? ' selected' : ''}`;
+                card.style.animationDelay = (i * 0.08) + 's';
+                card.onclick = () => !zoneData.isMainProduct && selectPart(zoneName, part.id);
+
+                card.innerHTML = `
+                    ${isSelected ? '<div class="selected-badge">✓ SELECTED</div>' : ''}
+                    <div class="part-img">
+                        ${part.image ? `<img src="${part.image}" alt="${part.name}">` : `<div style="width:100%; height:100%; background:linear-gradient(145deg,${part.gradient.join(',')})"></div>`}
+                    </div>
+                    <div class="part-info">
+                        <div class="part-name">${part.name}</div>
+                        <div class="part-subtitle">${part.subtitle}</div>
+                        ${!zoneData.isMainProduct ? `
+                            <span class="match-badge" style="background:${isSkinMatch ? 'rgba(45,155,110,0.12)' : 'rgba(184,146,42,0.1)'}; color:${isSkinMatch ? '#1D7A4F' : '#B8922A'}">
+                                ${isSkinMatch ? '🎨 Skin Match' : matchScore + '% Match'}
+                            </span>
+                            <div class="match-reason">"${part.matchReason}"</div>
+                        ` : '<div class="currently-viewing">Currently Viewing</div>'}
+                        <div class="price-row">
+                            <span class="sale-price">Rs. ${part.price.toLocaleString('en-IN')}</span>
+                            <span class="mrp">Rs. ${part.mrp.toLocaleString('en-IN')}</span>
+                            <span class="disc-pill">-${Math.round((1 - part.price/part.mrp)*100)}%</span>
+                        </div>
+                    </div>
+                    <div class="part-actions">
+                        <button class="btn-select">${isSelected ? '✓ Selected' : (zoneData.isMainProduct ? '✓ Main Item' : '+ Select')}</button>
+                        ${!zoneData.isMainProduct && !isSelected ? '<button class="btn-quick-add">🛒 Quick Add</button>' : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderTray() {
+            const container = document.getElementById('tray-slots');
+            container.innerHTML = '';
+            const zones = Object.keys(getCurrentZoneData());
+            let totalPrice = 0, totalMRP = 0;
+
+            zones.forEach(zone => {
+                const zoneInfo = getCurrentZoneData()[zone];
+                const selected = state.selectedParts[zone];
+                if (selected) { totalPrice += selected.price; totalMRP += selected.mrp; }
+
+                const slot = document.createElement('div');
+                slot.className = `tray-slot${selected ? ' filled' : ''}`;
+                slot.onclick = () => selectZone(zone);
+
+                slot.innerHTML = `
+                    <div class="slot-box">
+                        <div class="slot-icon">${zoneInfo.icon}</div>
+                        <div class="slot-check">✓</div>
+                        ${selected && !zoneInfo.isMainProduct ? `<button class="slot-remove" onclick="event.stopPropagation(); removeFromTray('${zone}')">×</button>` : ''}
+                        ${selected ? `<div style="position:absolute; inset:0; border-radius:14px; background:linear-gradient(145deg,${selected.gradient.join(',')}); opacity:0.6; z-index:-1;"></div>` : ''}
+                    </div>
+                    <div class="slot-label">${zoneInfo.label}</div>
+                    ${selected ? `<div class="slot-price">Rs. ${selected.price.toLocaleString('en-IN')}</div>` : ''}
+                `;
+                container.appendChild(slot);
+            });
+
+            document.getElementById('tray-total').textContent = 'Rs. ' + totalPrice.toLocaleString('en-IN');
+            const savings = totalMRP - totalPrice;
+            document.getElementById('tray-savings').textContent = savings > 0 ? `Total Saving: Rs. ${savings.toLocaleString('en-IN')}` : '';
+        }
+
+        function removeFromTray(zone) {
+            delete state.selectedParts[zone];
+            resetSilhouetteColors(state.gender); // Simplification: full reset and re-apply colors
+            // Clear all preview layers
+            document.querySelectorAll('.preview-layer').forEach(l => l.classList.remove('visible'));
+            
+            Object.keys(state.selectedParts).forEach(z => {
+                const p = state.selectedParts[z];
+                updateSilhouetteZoneColour(z, p.gradient[0], p.gradient[1]);
+                updateVisualPreview(z, p.image);
+            });
+            renderTray();
+            renderPartsList(state.activeZone);
+        }
+
+        function updateSilhouetteZoneColour(zoneName, fill, stroke) {
+            const gender = state.gender;
+            const womenMap = {
+                jewellery: ['#w-neck', '#w-head'],
+                blouse: ['#w-torso'],
+                saree: ['#w-saree'],
+                dupatta: ['#w-dupatta'],
+                footwear: ['#w-feet']
+            };
+            const menMap = {
+                kurta: ['#m-torso'],
+                jacket: ['#m-jacket'],
+                bottom: ['#m-bottom'],
+                headwear: ['#m-head'],
+                footwear: ['#m-feet'],
+                watch: [], // Handled by hotspots or just skipped
+                goggles: []
+            };
+
+            const map = gender === 'women' ? womenMap : menMap;
+            const selectors = map[zoneName] || [];
+            
+            selectors.forEach(sel => {
+                const el = document.querySelector(sel);
+                if (el) {
+                    el.style.fill = fill + 'CC';
+                    el.style.stroke = stroke || fill;
+                    el.style.strokeWidth = '2';
+                }
+            });
+        }
+
+        function resetSilhouetteColors(gender) {
+            const selectors = gender === 'women' ? '.zone-hit' : '.zone-hit';
+            document.querySelectorAll(selectors).forEach(el => {
+                el.style.fill = '';
+                el.style.stroke = '';
+            });
+        }
+
+        function renderPreviewChips() {
+            const container = document.getElementById('preview-row');
+            container.innerHTML = '';
+            state.lastSelected.forEach(part => {
+                const chip = document.createElement('div');
+                chip.className = 'preview-chip';
+                chip.style.background = `linear-gradient(145deg, ${part.gradient.join(',')})`;
+                chip.innerHTML = part.id.includes('j') ? '💍' : part.id.includes('b') ? '👚' : '👗';
+                container.appendChild(chip);
+            });
+        }
+
+        function switchGender(gender) {
+            console.log('Switching to gender:', gender);
+            state.gender = gender;
+            state.selectedParts = {};
+            state.lastSelected = [];
+            
+            // Toggle SVG visibility
+            const womenSvg = document.getElementById('svg-women');
+            const menSvg = document.getElementById('svg-men');
+            
+            if (gender === 'women') {
+                state.selectedParts['saree'] = ZONE_DATA_WOMEN.saree.parts[0];
+                if (womenSvg) womenSvg.style.display = 'block';
+                if (menSvg) menSvg.style.display = 'none';
+                selectZone('saree');
+            } else {
+                state.selectedParts['kurta'] = ZONE_DATA_MEN.kurta.parts[0];
+                if (womenSvg) womenSvg.style.display = 'none';
+                if (menSvg) menSvg.style.display = 'block';
+                selectZone('kurta');
+            }
+            
+            resetSilhouetteColors(gender);
+            // Clear visual preview
+            document.querySelectorAll('.preview-layer').forEach(l => {
+                l.classList.remove('visible');
+                l.src = '';
+            });
+            
+            // Re-apply colors for the default selected parts
+            Object.keys(state.selectedParts).forEach(z => {
+                const p = state.selectedParts[z];
+                updateSilhouetteZoneColour(z, p.gradient[0], p.gradient[1]);
+                updateVisualPreview(z, p.image);
+            });
+
+            renderTray();
+            renderPreviewChips();
+        }
+
+        function renderSkinToneRecs(tone) {
+            const row = document.getElementById('tone-recs-row');
+            row.style.display = 'flex';
+            const recs = SKIN_TONE_RECS[tone];
+            
+            // Clean old chips
+            row.querySelectorAll('.tone-chip').forEach(c => c.remove());
+            
+            recs.forEach(rec => {
+                const chip = document.createElement('div');
+                chip.className = 'tone-chip';
+                chip.innerHTML = `<div class="tone-chip-color" style="background:${rec.hex}"></div>${rec.name} ✓`;
+                row.appendChild(chip);
+            });
+        }
+
+        function calculateMatchScore(part, tone) {
+            const base = part.matchScore;
+            return isPartSkinMatch(part, tone) ? Math.min(100, base + 10) : base;
+        }
+
+        function isPartSkinMatch(part, tone) {
+            const recs = SKIN_TONE_RECS[tone];
+            return recs.some(r => part.gradient[0].toLowerCase().includes(r.hex.toLowerCase().slice(1, 5)));
+        }
+
+        function showColourTip(part) {
+            const toast = document.getElementById('color-tip-toast');
+            const text = document.getElementById('color-tip-text');
+            const color = part.gradient[0].toLowerCase();
+            
+            let tip = "Pair with metallic gold or ivory for a royal look.";
+            if (color.includes('maroon') || color.includes('6b1')) tip = "Pair with gold, ivory, or deep green accessories.";
+            if (color.includes('green') || color.includes('1a5')) tip = "Try ivory, gold, or blush pink to complement.";
+            if (color.includes('blue') || color.includes('0d2')) tip = "Silver, gold, or white accessories work best.";
+            
+            text.textContent = `✦ Colour Tip: ${tip}`;
+            toast.style.display = 'flex';
+        }
+
+        function addAllToCart() {
+            const items = Object.values(state.selectedParts);
+            let cart = JSON.parse(localStorage.getItem('urvaah-cart') || '[]');
+            items.forEach(item => {
+                if (!cart.find(c => c.id === item.id)) cart.push(item);
+            });
+            localStorage.setItem('urvaah-cart', JSON.stringify(cart));
+            
+            const btn = document.getElementById('btn-add-all');
+            btn.textContent = '✓ Added to Cart!';
+            btn.style.background = '#2D9B6E';
+            setTimeout(() => {
+                btn.textContent = '🛒 Add Complete Outfit to Cart';
+                btn.style.background = '';
+            }, 2000);
+            
+            showToast('Outfit added to your cart! 🎉', 'success');
+        }
+
+        function showToast(msg, type='info', duration=3000) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:10px;';
+                document.body.appendChild(container);
+            }
+            
+            const colors = { success:'#2D9B6E', error:'#C0392B', warning:'#E87A35', info:'#B8922A' };
+            const toast = document.createElement('div');
+            toast.style.cssText = `background:white; border-left:4px solid ${colors[type]}; padding:14px 20px; border-radius:10px; font-size:13px; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,0.15); animation:slideInRight 0.3s ease;`;
+            toast.textContent = msg;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        function getCurrentZoneData() {
+            return state.gender === 'women' ? ZONE_DATA_WOMEN : ZONE_DATA_MEN;
+        }
+
+        /* ── Start ── */
+        document.addEventListener('DOMContentLoaded', () => {
+            initBuilder();
+            lucide.createIcons();
+        });
+
+    </script>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart-drawer.js"></script>
+</body>
+</html>

@@ -268,14 +268,61 @@
   background: rgba(0,0,0,0.4); opacity: 0; transition: opacity .2s;
 }
 .ugc-photo-tile:hover .ugc-play-overlay { opacity: 1; }
-.review-cards { display: flex; flex-direction: column; gap: 20px; }
-.review-card {
-  background: var(--card-bg); border: 1px solid var(--border-default);
-  border-radius: 16px; padding: 24px;
-  opacity: 0; animation: floatUp .5s ease forwards;
-  transition: border-color .3s, transform .2s, box-shadow .2s;
+.reviews-carousel-wrapper {
+  position: relative;
+  margin: 40px -20px 0;
+  padding: 0 20px;
 }
-.review-card:hover { border-color: var(--gold-light); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.review-cards { 
+  display: flex; 
+  flex-direction: row; 
+  gap: 24px; 
+  overflow-x: auto; 
+  padding: 20px 0 40px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.review-cards::-webkit-scrollbar { display: none; }
+
+.review-card {
+  flex-shrink: 0;
+  width: 320px;
+  background: var(--card-bg); 
+  border: 1px solid var(--border-default);
+  border-radius: 16px; padding: 24px;
+  opacity: 1; /* Removing animation for better carousel feel */
+  transition: border-color .3s, transform .2s, box-shadow .2s;
+  display: flex;
+  flex-direction: column;
+}
+.review-card:hover { border-color: var(--gold-light); transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+
+.review-scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--gold);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
+.review-scroll-arrow:hover {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.review-scroll-arrow.left { left: 0; }
+.review-scroll-arrow.right { right: 0; }
 .review-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
 .reviewer-avatar {
   width: 42px; height: 42px; border-radius: 50%;

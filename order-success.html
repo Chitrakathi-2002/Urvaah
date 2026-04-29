@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/order-success.css">
+    <link rel="stylesheet" href="css/outfit-builder.css"> <!-- for reco cards -->
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+</head>
+<body class="success-page">
+
+    <div class="success-circle-wrap">
+        <div class="success-circle">
+            <svg class="checkmark-svg" viewBox="0 0 52 52">
+                <path class="checkmark-path" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        <div class="sparkle">✦</div>
+        <div class="sparkle">✦</div>
+        <div class="sparkle">✦</div>
+        <div class="sparkle">✦</div>
+        <div class="sparkle">✦</div>
+        <div class="sparkle">✦</div>
+    </div>
+
+    <h1 class="success-headline">Order Confirmed! 🎉</h1>
+    <p class="success-subtitle">Your order is placed and being prepared with love.</p>
+
+    <div class="order-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px;">
+            <div>
+                <p style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Order ID</p>
+                <div class="order-id" id="order-id-display">#HOU12345678 <span class="copy-icon">📋</span></div>
+            </div>
+            <div style="text-align:right;">
+                <p style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px;">Total Amount</p>
+                <div style="font-size:20px; font-weight:800; color:var(--text-primary);" id="order-total">Rs. 0</div>
+            </div>
+        </div>
+
+        <div id="order-items-list" style="margin-bottom:20px;">
+            <!-- Injected by JS -->
+        </div>
+
+        <div class="order-row"><span>Customer</span><strong id="order-customer">...</strong></div>
+        <div class="order-row"><span>Delivery Address</span><strong id="order-address" style="text-align:right; max-width:200px;">...</strong></div>
+        <div class="order-row"><span>Payment</span><strong id="order-payment">...</strong></div>
+        <div class="order-row"><span>Est. Delivery</span><strong class="delivery-est" id="order-delivery">3-5 Business Days</strong></div>
+        
+        <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:20px; border-top:1px solid var(--border-default); padding-top:15px;">
+            You'll receive an SMS confirmation shortly.
+        </p>
+    </div>
+
+    <div class="success-actions">
+        <button class="btn-track" id="btn-track-order">Track My Order</button>
+        <a href="collection.html" class="btn-continue">Continue Shopping →</a>
+        <button class="btn-share-success" id="btn-share-order">Share on WhatsApp</button>
+    </div>
+
+    <div style="margin-top:80px; width:100%; max-width:1200px;">
+        <h2 style="font-family:'Playfair Display',serif; font-size:24px; text-align:center; margin-bottom:40px; color:var(--text-primary);">You Might Also Love</h2>
+        <div id="success-reco-track" style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/recommendations.js"></script>
+    <script src="js/order-success.js"></script>
+</body>
+</html>

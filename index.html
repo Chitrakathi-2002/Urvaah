@@ -4,54 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House of Urvaah | Premium Luxury Ethnic Wear</title>
+    <link rel="stylesheet" href="css/globals.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/cart-drawer.css">
+    <link rel="stylesheet" href="css/components.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      (function(){
+        var t = localStorage.getItem('urvaah-theme')||'light';
+        document.documentElement.setAttribute('data-theme',t);
+      })();
+    </script>
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="nav-logo">House of Urvaah</a>
-        <div class="nav-links" id="mobile-menu">
-            <a href="collections.html?cat=sarees">Sarees</a>
-            <a href="collections.html?cat=menswear">Menswear</a>
-            <a href="collections.html?cat=couples">Couples</a>
-            <a href="#">New Arrivals</a>
+    <header class="navbar" id="navbar">
+      <div class="announcement-bar">
+        <div class="marquee-track">
+          <span>✦ 50% OFF on All Sarees · Free Gift Packaging · COD Available · First Order Extra 10% Off · Free Shipping above Rs. 999 ✦</span>
         </div>
+      </div>
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+        <ul class="nav-links">
+          <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+          <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+          <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+          <li><a href="outfit-builder.html" class="builder-link">Outfit Builder</a></li>
+          <li><a href="index.html#occasions">Occasions</a></li>
+        </ul>
         <div class="nav-actions">
-            <div class="nav-icon"><i data-lucide="search"></i></div>
-            <div class="nav-icon"><i data-lucide="heart"></i><span class="count-badge wishlist-count">0</span></div>
-            <div class="nav-icon"><i data-lucide="shopping-bag"></i><span class="count-badge cart-count">0</span></div>
-            <div class="nav-icon mobile-toggle" id="menu-toggle"><i data-lucide="menu"></i></div>
+          <button class="nav-icon-btn" title="Search"><i data-lucide="search"></i></button>
+          <a href="wishlist.html" class="nav-icon-btn" title="Wishlist">
+            <i data-lucide="heart"></i>
+            <span class="wishlist-badge nav-badge">0</span>
+          </a>
+          <button id="theme-toggle" class="nav-icon-btn theme-toggle-btn" title="Toggle Theme">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon">🌙</span>
+          </button>
+          <button class="nav-icon-btn" onclick="CartDrawer.open()" title="Cart">
+            <i data-lucide="shopping-bag"></i>
+            <span class="cart-badge nav-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
-    </nav>
-    <script src="js/main.js"></script>
+      </nav>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+      <ul class="mobile-nav-links">
+        <li><a href="collection.html?cat=Sarees">Sarees</a></li>
+        <li><a href="collection.html?cat=Menswear">Men's Kurta</a></li>
+        <li><a href="collection.html?cat=Couples">Couple Sets</a></li>
+        <li><a href="outfit-builder.html">Outfit Builder</a></li>
+        <li><a href="wishlist.html">My Wishlist</a></li>
+        <li><a href="cart.html">My Cart</a></li>
+      </ul>
+    </div>
 
     <main>
         <section class="hero">
             <div class="hero-content">
                 <p class="hero-subtitle">Heritage Reimagined</p>
-                <h1 class="hero-title">Timeless Elegance</h1>
-                <a href="collections.html?cat=sarees" class="btn btn-primary">Shop the Collection</a>
+                <h1 class="hero-title">Timeless Elegance <br> For Him & Her</h1>
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <a href="collection.html?cat=Sarees" class="btn btn-primary" style="width: auto;">Shop Women's</a>
+                    <a href="collection.html?cat=Menswear" class="btn btn-outline" style="width: auto; border-color: #fff; color: #fff;">Shop Men's</a>
+                </div>
             </div>
         </section>
 
-        <section class="container">
-            <h2 style="text-align: center; font-size: 40px; margin-bottom: 60px;">Our Bestsellers</h2>
+        <section class="container" style="padding: 100px 40px;">
+            <h2 style="text-align: center; font-family:'Playfair Display',serif; font-size: 40px; margin-bottom: 60px;">Curated Bestsellers</h2>
             <div id="bestseller-grid" class="product-grid">
                 <!-- Injected by JS -->
             </div>
         </section>
 
-        <section style="background-color: var(--bg-surface);">
-            <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+        <section class="container" style="padding: 0 40px 100px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border-default); padding-bottom: 20px;">
+                <h2 style="font-family:'Playfair Display',serif; font-size: 32px;">Menswear Excellence</h2>
+                <a href="collection.html?cat=Menswear" style="color: var(--gold); text-decoration: none; font-weight: 700; letter-spacing: 1px; font-size: 13px;">VIEW COLLECTION →</a>
+            </div>
+            <div id="menswear-grid" class="product-grid">
+                <!-- Injected by JS -->
+            </div>
+        </section>
+
+        <section style="background-color: var(--bg-surface); padding: 100px 40px;">
+            <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
                 <div>
-                    <h2 style="font-size: 48px; margin-bottom: 30px;">Authentic Craftsmanship</h2>
-                    <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 40px;">
+                    <h2 style="font-family:'Playfair Display',serif; font-size: 48px; margin-bottom: 30px;">Authentic Craftsmanship</h2>
+                    <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 40px; line-height: 1.6;">
                         Each piece at House of Urvaah is a testament to India's rich weaving heritage. 
                         From the looms of Kanchipuram to the weavers of Banaras, we bring you only the finest.
                     </p>
                     <a href="#" class="btn btn-outline">Our Story</a>
                 </div>
-                <div style="aspect-ratio: 4/5; border-radius: 30px; overflow: hidden; background: linear-gradient(45deg, #6B1F2A, #C9A84C);" class="shimmer">
+                <div style="aspect-ratio: 4/5; border-radius: 30px; overflow: hidden; position: relative;">
+                    <img src="assets/mens_ivory_sherwani_worn_1777401627692.png" alt="Heritage Craftsmanship" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
         </section>
@@ -59,12 +116,12 @@
 
     <footer style="padding: 100px 0; border-top: 1px solid var(--border-default); text-align: center;">
         <div class="container">
-            <h2 style="font-size: 32px; margin-bottom: 20px;">House of Urvaah</h2>
+            <h2 style="font-family:'Playfair Display',serif; font-size: 32px; margin-bottom: 20px;">House of Urvaah</h2>
             <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 40px;">
                 Join our newsletter for exclusive previews and styling tips.
             </p>
             <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 60px;">
-                <input type="email" placeholder="Enter your email" style="padding: 15px 30px; border-radius: 100px; border: 1px solid var(--border-default); width: 300px;">
+                <input type="email" placeholder="Enter your email" style="padding: 15px 30px; border-radius: 100px; border: 1px solid var(--border-default); width: 300px; background:transparent; color:var(--text-primary);">
                 <button class="btn btn-primary">Subscribe</button>
             </div>
             <div style="font-size: 12px; color: var(--text-muted);">
@@ -73,37 +130,96 @@
         </div>
     </footer>
 
-    <script src="js/data.js"></script>
+    <!-- Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="CartDrawer.close()"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <h2 class="drawer-title">🛒 Your Cart <span class="drawer-count" id="drawer-count">(0 items)</span></h2>
+            <button class="drawer-close" onclick="CartDrawer.close()">✕</button>
+        </div>
+        <div class="shipping-progress">
+            <p class="shipping-msg" id="shipping-msg"></p>
+            <div class="shipping-track"><div class="shipping-fill" id="shipping-fill"></div></div>
+        </div>
+        <div class="drawer-items" id="drawer-items"></div>
+        <div class="drawer-empty" id="drawer-empty" style="display:none">
+            <div class="empty-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <a href="collection.html" class="btn-browse" onclick="CartDrawer.close()">Browse Collection →</a>
+        </div>
+        <div class="drawer-footer" id="drawer-footer">
+            <div class="drawer-subtotal">
+                <div class="subtotal-row"><span>Subtotal</span><span id="drawer-subtotal">Rs. 0</span></div>
+                <div class="subtotal-row saving-row"><span>You Save</span><span id="drawer-saving" class="saving-amount"></span></div>
+            </div>
+            <a href="checkout.html" class="btn-checkout-drawer">Proceed to Checkout →</a>
+            <a href="cart.html" class="btn-view-cart">View Full Cart</a>
+        </div>
+    </aside>
+
+    <script src="js/data/products.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/cart-drawer.js"></script>
     <script>
         lucide.createIcons();
 
         // Load Bestsellers
         const grid = document.getElementById('bestseller-grid');
-        PRODUCTS.forEach(product => {
+        PRODUCTS.filter(p => p.isBestseller).forEach(product => {
             const card = document.createElement('a');
-            card.href = `product.html?slug=${product.slug}`;
+            card.href = `product-detail.html?slug=${product.slug}`;
             card.className = 'product-card';
             
-            const mainImg = product.images.find(i => i.url) || product.images[0];
-            const imgHtml = mainImg.url 
-                ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}">`
-                : `<div class="product-image shimmer" style="background: linear-gradient(135deg, ${product.thumbnailGradient.join(', ')})"></div>`;
+            const mainImg = product.images.main || product.images[0];
+            const imgHtml = (mainImg && mainImg.url)
+                ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}" onerror="this.parentElement.classList.add('silk-swatch');this.remove();">`
+                : `<div class="product-image silk-swatch" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#B8922A','#6B1F2A']).join(', ')})"></div>`;
 
             card.innerHTML = `
-                <div class="product-image-container">
+                <div class="product-image-container ${(!mainImg || !mainImg.url) ? 'silk-swatch' : ''}" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#B8922A','#6B1F2A']).join(', ')})">
                     ${imgHtml}
                     <div style="position: absolute; top: 15px; right: 15px;">
                         <i data-lucide="heart" style="color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></i>
                     </div>
                 </div>
                 <div class="product-info">
-                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory}</p>
-                    <h3>${product.shortName}</h3>
-                    <p class="product-price">Rs. ${product.price.toLocaleString()}</p>
+                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory || product.category}</p>
+                    <h3>${product.shortName || product.name}</h3>
+                    <p class="product-price">Rs. ${product.price.toLocaleString('en-IN')}</p>
                 </div>
             `;
             grid.appendChild(card);
         });
+
+        // Load Menswear
+        const mensGrid = document.getElementById('menswear-grid');
+        PRODUCTS.filter(p => p.category === 'Menswear').slice(0, 4).forEach(product => {
+            const card = document.createElement('a');
+            card.href = `product-detail.html?slug=${product.slug}`;
+            card.className = 'product-card';
+            
+            const mainImg = product.images.main || product.images[0];
+            const imgHtml = (mainImg && mainImg.url)
+                ? `<img src="${mainImg.url}" class="product-image" alt="${product.name}" onerror="this.parentElement.classList.add('silk-swatch');this.remove();">`
+                : `<div class="product-image silk-swatch" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#0d2b5e','#1a4fa0']).join(', ')})"></div>`;
+
+            card.innerHTML = `
+                <div class="product-image-container ${(!mainImg || !mainImg.url) ? 'silk-swatch' : ''}" style="background: linear-gradient(135deg, ${(mainImg?.gradient || product.gradientColors || ['#0d2b5e','#1a4fa0']).join(', ')})">
+                    ${imgHtml}
+                    <div style="position: absolute; top: 15px; right: 15px;">
+                        <i data-lucide="heart" style="color: #fff; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></i>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold);">${product.subCategory || product.category}</p>
+                    <h3>${product.shortName || product.name}</h3>
+                    <p class="product-price">Rs. ${product.price.toLocaleString('en-IN')}</p>
+                </div>
+            `;
+            mensGrid.appendChild(card);
+        });
+
         lucide.createIcons();
     </script>
 </body>

@@ -1,0 +1,136 @@
+/* ══ CHECKOUT PAGE ══ */
+.checkout-page { padding:40px 0 100px; background: var(--bg-page); min-height: 100vh; }
+.checkout-layout {
+  display:grid; grid-template-columns:1fr 400px;
+  gap:48px; max-width:1200px; margin:0 auto; padding:0 40px;
+  align-items:start;
+}
+
+/* Progress steps */
+.checkout-steps {
+  display:flex; align-items:center; gap:0;
+  max-width:500px; margin:0 auto 48px; padding:0 40px;
+}
+.step-item { display:flex; flex-direction:column; align-items:center; flex:1; position: relative; }
+.step-circle {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; border:2px solid var(--border-default);
+  background:var(--bg-page); color:var(--text-muted); transition:all .35s;
+  z-index: 2;
+}
+.step-circle.active { background:var(--gold); color:#0A0A0F; border-color:var(--gold); }
+.step-circle.done   { background:var(--green-success); color:#fff; border-color:var(--green-success); }
+.step-line {
+  flex:1; height:2px; background:var(--border-default); margin:0 -2px;
+  position:relative; top:-18px; transition:background .35s;
+  z-index: 1;
+}
+.step-line.done { background:var(--green-success); }
+.step-label { font-size:11px; color:var(--text-muted); margin-top:6px; text-align:center; }
+.step-label.active { color:var(--gold); font-weight:600; }
+
+/* Form section */
+.form-section {
+  background:var(--card-bg); border:1px solid var(--border-default);
+  border-radius:20px; padding:32px; margin-bottom:20px; display:none;
+}
+.form-section.active { display:block; animation:fadeUp .35s ease; }
+.form-section-title {
+  font-family:'Playfair Display',serif; font-size:20px;
+  color:var(--text-primary); margin-bottom:24px;
+}
+
+/* Form inputs */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-grid.single { grid-template-columns:1fr; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+.form-label {
+  font-size:13px; font-weight:600; color:var(--text-secondary);
+  font-family:'DM Sans',sans-serif;
+}
+.form-label span { color:var(--red-urgency); margin-left:2px; }
+.form-input, .state-select {
+  height:48px; padding:0 16px; border-radius:10px;
+  border:1.5px solid var(--border-default);
+  background:var(--input-bg); color:var(--text-primary);
+  font-family:'DM Sans',sans-serif; font-size:14px;
+  transition:border-color .2s, box-shadow .2s; outline:none;
+}
+.form-input:focus, .state-select:focus {
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px var(--gold-glow);
+}
+.form-input.error { border-color:var(--red-urgency); }
+.form-input.valid { border-color:var(--green-success); }
+.form-error {
+  font-size:11px; color:var(--red-urgency);
+  display:none; align-items:center; gap:4px;
+}
+.form-error.show { display:flex; }
+
+/* Payment option cards */
+.payment-options { display:flex; flex-direction:column; gap:16px; }
+.payment-card {
+  border:2px solid var(--border-default); border-radius:16px;
+  padding:20px 24px; cursor:pointer; transition:all .25s;
+}
+.payment-card:hover { border-color:var(--gold-light); }
+.payment-card.selected { border-color:var(--gold); background:rgba(201,168,76,0.05); }
+.payment-card-header { display:flex; align-items:center; gap:14px; }
+.payment-radio {
+  width:20px; height:20px; border-radius:50%;
+  border:2px solid var(--border-default); flex-shrink:0;
+  transition:all .2s; position:relative;
+}
+.payment-card.selected .payment-radio {
+  border-color:var(--gold); background:var(--gold);
+}
+.payment-card.selected .payment-radio::after {
+  content:''; position:absolute; inset:4px; background:#0A0A0F;
+  border-radius:50%;
+}
+.payment-label {
+  font-size:16px; font-weight:700; color:var(--text-primary);
+  font-family:'Playfair Display',serif;
+}
+.payment-desc { font-size:13px; color:var(--text-muted); margin-top:4px; }
+.payment-benefit {
+  margin-top:12px; padding:10px 14px; background:rgba(45,155,110,0.1);
+  border:1px solid rgba(45,155,110,0.3); border-radius:8px;
+  font-size:12px; color:var(--green-success); font-weight:600;
+}
+.payment-sub-options {
+  margin-top:16px; padding-top:16px; border-top:1px solid var(--border-default);
+  display:none;
+}
+.payment-card.selected .payment-sub-options { display:block; }
+
+/* Place order button */
+.btn-place-order {
+  width:100%; height:56px; border-radius:100px;
+  background:var(--gold); color:#0A0A0F; border:none;
+  font-family:'Playfair Display',serif; font-size:16px; font-weight:700;
+  cursor:pointer; transition:all .3s; margin-top:24px; letter-spacing:.5px;
+}
+.btn-place-order:hover:not(:disabled) {
+  box-shadow:0 8px 28px var(--gold-glow); transform:translateY(-2px);
+}
+.btn-place-order:disabled { opacity:.5; cursor:not-allowed; }
+.btn-place-order.loading {
+  background:var(--bg-surface-2); color:var(--text-muted);
+}
+.security-note {
+  text-align:center; font-size:12px; color:var(--text-muted);
+  margin-top:12px; display:flex; align-items:center; justify-content:center; gap:6px;
+}
+
+@media(max-width:1024px){
+  .checkout-layout { grid-template-columns:1fr; }
+  .checkout-summary-panel { order:-1; }
+}
+@media(max-width:768px){
+  .form-grid { grid-template-columns:1fr; }
+  .checkout-layout { padding:0 20px; }
+}

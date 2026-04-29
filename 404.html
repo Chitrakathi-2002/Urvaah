@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | House of Urvaah</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        .error-page {
+            height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+        }
+        .error-code {
+            font-family: 'Playfair Display', serif; font-size: 120px; font-weight: 900; color: var(--gold);
+            line-height: 1; margin-bottom: 20px; opacity: 0.2;
+        }
+        .error-title { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 10px; }
+        .error-desc { color: var(--text-muted); max-width: 500px; margin-bottom: 40px; }
+    </style>
+</head>
+<body>
+    <header class="navbar" id="navbar">
+      <nav class="nav-inner">
+        <a href="index.html" class="nav-logo"><span class="logo-icon">✦</span> House of Urvaah</a>
+      </nav>
+    </header>
+
+    <main class="error-page">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Looking for something?</h1>
+        <p class="error-desc">
+            The page you are looking for might have been moved, removed, or never existed. 
+            Don't worry, our handcrafted collection is just a click away.
+        </p>
+        <div style="display:flex; gap:20px;">
+            <a href="index.html" class="btn btn-outline">Back to Home</a>
+            <a href="collection.html" class="btn btn-primary">Browse Collection →</a>
+        </div>
+    </main>
+
+    <script src="js/globals.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>
